@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.0.0
+@version 1.0.1
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -43,7 +43,8 @@
     }
 
     /* Comment */
-    ytd-comment-view-model:is(.ytd-comment-thread-renderer, ytd-comment-replies-renderer) {
+    ytd-comment-thread-renderer.ytd-item-section-renderer,
+    ytd-comment-view-model.ytd-comment-replies-renderer {
         /* Fuck super thanks */
         &:has(yt-pdg-comment-chip-renderer:not([hidden])) {
             .hide(@superThanks);
