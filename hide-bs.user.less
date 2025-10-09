@@ -1,0 +1,123 @@
+/* ==UserStyle==
+@name Hide Youtube BS
+@namespace github.com/Dheatly23/Custom-Patches-For-Youtube
+@version 1.0.0
+@description Clean up Youtube's BS to make watching experience better
+@author Dheatly23
+@homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
+@supportURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
+@license Apache-2.0
+
+@preprocessor less
+@var select membersVideo "Membership Video" ["show", "hide", "soft-hide"]
+@var select verifiedVideo "Verified Video" ["show", "hide", "soft-hide"]
+@var select superThanks "Super Thanks" ["show", "hide", "soft-hide"]
+@var select membersComment "Members Comment" ["show", "hide", "soft-hide"]
+@var select verifiedComment "Verified (and Artist) User Comment" ["show", "hide", "soft-hide"]
+@var select aiSummary "AI Summary" ["show", "hide", "soft-hide", "replace"]
+==/UserStyle== */
+
+@-moz-document domain("youtube.com") {
+    /* Youtube site */
+    /* Hide 🖕 */
+    .hide(hide) {
+        display: none;
+    }
+
+    /* Soft hide 👍 */
+    .hide(soft-hide) {
+        filter: grayscale(75%) opacity(10%);
+    }
+
+    /* Rest 👎 */
+    .hide(@p) {}
+
+    /* Fuck membership */
+    ytd-rich-item-renderer.ytd-rich-grid-renderer:has(ytd-badge-supported-renderer > .badge-style-type-members-only) {
+        .hide(@membersVideo);
+    }
+
+    /* Unverify raygun 🔫 */
+    yt-lockup-view-model.ytd-item-section-renderer:has(.yt-core-attributed-string .ytSpecIconShapeHost) {
+        .hide(@verifiedVideo);
+    }
+
+    /* Comment */
+    ytd-comment-view-model:is(.ytd-comment-thread-renderer, ytd-comment-replies-renderer) {
+        /* Fuck super thanks */
+        &:has(yt-pdg-comment-chip-renderer:not([hidden])) {
+            .hide(@superThanks);
+        }
+
+        /* Members gets findommed */
+        &:has(ytd-sponsor-comment-badge-renderer) {
+            .hide(@membersComment);
+        }
+
+        /* Verify my ass */
+        &:has(ytd-author-comment-badge-renderer) {
+            .hide(@verifiedComment);
+        }
+    }
+
+    /* Super chat (pending) */
+    /* Artificial Idiot box is back in style 😎 */
+    ytd-expandable-metadata-renderer:has(video-summary-content-view-model) {
+        /* Hideous replacement here */
+        .handle(replace) {
+            &:not(:hover) {
+                #expanded-title-subtitle-text {
+                    > #expanded-title:first-child {
+                        > * {
+                            display: none;
+                        }
+
+                        &::before {
+                            content: "🤖 Beep Boop I Am An Idiot";
+                        }
+                    }
+
+                    > #expanded-subtitle > a {
+                        > yt-formatted-string {
+                            display: none;
+                        }
+
+                        &::before {
+                            content: "Youtube did not do QA";
+                        }
+                    }
+                }
+
+                #collapsed-label {
+                    > yt-formatted-string {
+                        display: none;
+                    }
+
+                    &::after {
+                        content: "Retard Box";
+                    }
+                }
+
+                :is(#collapsed-title, p) {
+                    > * {
+                        display: none;
+                    }
+
+                    &::after {
+                        content: "Youtube wants to artificially sand your intelligence off. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text 🤪. (Hover over to \22restore\22  to original)";
+                    }
+                }
+
+                like-button-view-model {
+                    display: none;
+                }
+            }
+        }
+
+        .handle(@v) {
+            .hide(@v);
+        }
+
+        .handle(@aiSummary)
+    }
+}

@@ -1,0 +1,306 @@
+/* ==UserStyle==
+@name           Dheatly's Custom Patches for Youtube
+@namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
+@version        0.0.1
+@description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
+@author         Dheatly23
+@preprocessor   stylus
+@homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
+@supportURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
+@license Apache-2.0
+
+@var range borderRadius                "  ⚙️ Border Radius" [0, 0, 40, 1, 'px']
+@var range buttonRadius                "  ⚙️ Buttons Radius" [2, 0, 18, 1, 'px']
+@var range profileRadius               "  ⚙️ Profiles Radius" [50, 0, 50, 1, '%']
+@var checkbox  searchSideDisable        "Disable search sidebar" 0
+@var text  searchSideWidth             "Sidebar width" 100px
+
+==/UserStyle== */
+@-moz-document domain("www.youtube.com") {
+    [page-subtype = "channels"] {
+        /* Fix margins */
+        --ytd-rich-grid-item-margin: 4px;
+        --ytd-rich-grid-row-margin: 4px;
+
+        ytd-rich-item-renderer.ytd-rich-grid-renderer:not([is-shelf-item]) {
+            margin-left: calc(var(--ytd-rich-grid-item-margin) / 2);
+            margin-right: calc(var(--ytd-rich-grid-item-margin) / 2);
+            margin-bottom: calc(var(--ytd-rich-grid-item-margin) / 2);
+            width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) * 2 - 0.01px);
+        }
+
+        /* Fuck membership 🖕 */
+        #contents {
+            > ytd-rich-item-renderer.ytd-rich-grid-renderer:has(ytd-badge-supported-renderer > .badge-style-type-members-only),
+            > ytd-item-section-renderer:has(> #contents > ytd-recognition-shelf-renderer) {
+                display: none;
+            }
+        }
+
+        /* Fix community post */
+        ytd-section-list-renderer > #contents > :is(ytd-backstage-items, ytd-comments) {
+            max-width: 100%;
+        }
+    }
+
+    /* Hide join button
+    ytd-video-owner-renderer.ytd-watch-metadata .ytd-video-owner-renderer,
+    tp-yt-app-header.ytd-c4-tabbed-header-renderer div#buttons > .ytd-c4-tabbed-header-renderer {
+        &#sponsor-button,
+        &#purchase-button {
+            display: none;
+        }
+    }
+    */
+    yt-page-header-view-model yt-flexible-actions-view-model > div:not(:has(yt-subscribe-button-view-model)) {
+        display: none;
+    }
+
+    /* Hide create button */
+    ytd-masthead #buttons.ytd-masthead > ytd-button-renderer.ytd-masthead:has(button[aria-label = "Create"]) {
+        display: none;
+    }
+
+    /* Patch margins */
+    [page-subtype = "subscriptions"] {
+        ytd-rich-grid-renderer {
+            #contents {
+                --ytd-rich-grid-item-margin: 4px;
+            }
+
+            ytd-rich-item-renderer:not([is-shelf-item]) {
+                margin-left: calc(var(--ytd-rich-grid-item-margin) / 2);
+                margin-right: calc(var(--ytd-rich-grid-item-margin) / 2);
+                margin-bottom: calc(var(--ytd-rich-grid-item-margin) / 2);
+                width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) * 2 - 0.01px);
+            }
+
+            #contents #contents > ytd-rich-item-renderer[is-shelf-item] {
+                margin-left: calc(var(--ytd-rich-grid-item-margin) / 2);
+                margin-right: calc(var(--ytd-rich-grid-item-margin) / 2);
+                margin-bottom: calc(var(--ytd-rich-grid-item-margin) / 2);
+                width: calc(100% / var(--ytd-rich-grid-slim-items-per-row) - var(--ytd-rich-grid-item-margin) * 2 - 0.01px);
+                /* Patch shorts */
+                &:not([hidden]) {
+                    display: block !important;
+                }
+            }
+        }
+    }
+
+    /* Reduce padding on about
+    #channel-tagline.ytd-c4-tabbed-header-renderer {
+        ytd-channel-tagline-renderer.ytd-c4-tabbed-header-renderer {
+            padding: 0px;
+        }
+    }
+    */
+    /* Channel avatar live ring -> square and image too */
+    yt-avatar-shape {
+        div.yt-spec-avatar-shape--live-ring::after,
+        img.yt-spec-avatar-shape__image {
+            border-radius: profileRadius;
+        }
+    }
+
+    /* Fix channel banner */
+    yt-image-banner-view-model {
+        border-radius: borderRadius !important;
+    }
+
+    /* Fix video thumbnail */
+    yt-thumbnail-view-model {
+        border-radius: borderRadius !important;
+    }
+
+    /* Fix comment thumbnail */
+    #author-thumbnail.ytd-comment-view-model yt-img-shadow.ytd-comment-view-model {
+        border-radius: profileRadius;
+    }
+
+    /* Fix buttons */
+    button.yt-spec-button-shape-next {
+        border-radius: buttonRadius;
+    }
+
+    /* Watch page */
+    ytd-watch-flexy:not([hidden]) {
+        #below {
+            /* Replace bullshit "clarify box" */
+            > #clarify-box > ytd-info-panel-container-renderer {
+                ytd-info-panel-content-renderer {
+                    border-bottom-left-radius: borderRadius;
+                    border-bottom-right-radius: borderRadius;
+                }
+
+                &:not(:hover) {
+                    h2 yt-formatted-string {
+                        &::before {
+                            /* Some hideous replacement here */
+                            content: "Youtube want to dictate your knowledge about \22";
+                        }
+
+                        &::after {
+                            /* Some hideous replacement here */
+                            content: "\22  (massive air quotes there 😉)";
+                        }
+                    }
+
+                    ytd-info-panel-content-renderer yt-attributed-string {
+                        > * {
+                            display: none;
+                        }
+
+                        &::after {
+                            /* Some hideous replacement here */
+                            content: "Youtube wants to tell you to fuck your agency right off. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text. 🤣 (Hover over to \22restore\22  to original)";
+                        }
+                    }
+                }
+            }
+
+            /* Hide useless AI "summary" */
+            > #expandable-metadata:has(> ytd-expandable-metadata-renderer) {
+                display: none;
+            }
+
+            /* Replace another bullshit box */
+            > ytd-watch-metadata ytd-info-panel-content-renderer {
+                border-radius: borderRadius;
+
+                &:not(:hover) {
+                    yt-icon.inline-icon,
+                    #menu {
+                        display: none;
+                    }
+
+                    div.paragraphs.ytd-info-panel-content-renderer {
+                        > div.style-scope.ytd-info-panel-content-renderer > yt-formatted-string {
+                            &::before {
+                                /* Some hideous replacement here */
+                                content: "Youtube Verifies☑ that \22";
+                            }
+
+                            &::after {
+                                /* Some hideous replacement here */
+                                content: "\22  (total lies 🙄)";
+                            }
+                        }
+
+                        > div.ytd-info-panel-content-renderer.disclaimer-container,
+                        > div.style-scope.ytd-info-panel-content-renderer > div.inline-source:not([hidden]) {
+                            > * {
+                                display: none;
+                            }
+
+                            &::after {
+                                /* Some hideous replacement here */
+                                content: "Youtube wants to fuck your mind and rewrite freedom to think. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text. 🤣 (Hover over to \22restore\22  to original)";
+                                color: var(--yt-spec-text-primary);
+                            }
+                        }
+                    }
+                }
+            }
+
+            /* More marie kondo */
+            > #ticket-shelf {
+                display: none;
+            }
+        }
+
+        /* Weird channel in related */
+        #related #contents > ytd-channel-renderer,
+        yt-button-view-model:has(button:is(/* No save button */
+        [aria-label = "Save to playlist"],
+        /* No share button */
+        [aria-label = "Share"],
+        )) {
+            display: none;
+        }
+    }
+
+    /* Comments */
+    ytd-comments > ytd-item-section-renderer > #contents {
+        /* NO_U */
+        > ytd-comment-thread-renderer.ytd-item-section-renderer {
+            &:has(yt-pdg-comment-chip-renderer:not([hidden])) {
+                display: none;
+                /* filter: grayscale(75%) opacity(10%); */
+            }
+        }
+
+        /* No skeleton in my backyard */
+        > ytd-continuation-item-renderer > #ghost-comment-section {
+            display: none;
+        }
+    }
+
+    yt-searchbox {
+        /* Fix search box */
+        > div.ytSearchboxComponentInputBox,
+        > button.ytSearchboxComponentSearchButton {
+            border-radius: profileRadius;
+        }
+
+        /* Hide spoilery search thumbnail */
+        > div.ytSearchboxComponentSuggestionsContainer > div.ytSuggestionComponentSuggestion > div.ytSuggestionComponentRightContainer:has(> div.ytSuggestionComponentThumbnailContainer),
+        /* Hide mic button */
+        ~ #voice-search-button {
+            display: none;
+        }
+    }
+
+    yt-live-chat-app {
+        /* Hide useless AI "chat summary" */
+        yt-live-chat-banner-manager:has(yt-live-chat-banner-chat-summary-renderer),
+        /* Hide bs "leaderboard"
+           Might also remove badges.
+        */
+        yt-live-chat-header-renderer div:has(> ytvl-live-viewer-leaderboard-chat-entry-point-view-model),
+        yt-live-chat-item-list-renderer yt-live-chat-text-message-renderer > #content > yt-live-chat-author-chip + div.yt-live-chat-text-message-renderer:has(> yt-button-view-model) {
+            display: none;
+        }
+    }
+
+    /* Search page */
+    ytd-search.ytd-page-manager > #container {
+        /* Search sidebar stuff */
+        > ytd-two-column-search-results-renderer {
+            > #primary {
+                max-width: 100%;
+            }
+
+            > ytd-secondary-search-container-renderer#secondary {
+                padding-left: 0px;
+                width: searchSideWidth;
+                display: none if searchSideDisable;
+            }
+        }
+
+        /* Fix margin */
+        --ytd-rich-grid-item-margin: 4px;
+
+        ytd-section-list-renderer > #contents > ytd-item-section-renderer > #contents {
+            /* Fix excessive bottom margin */
+            > ytd-video-renderer {
+                margin-bottom: 0px;
+            }
+
+            /* No shorts */
+            > grid-shelf-view-model:has(ytm-shorts-lockup-view-model-v2) {
+                display: none;
+            }
+        }
+    }
+
+    /* Disable touchy feedbacky ma */
+    yt-lockup-view-model > div.yt-lockup-view-model > yt-touch-feedback-shape {
+        display: none;
+    }
+
+    /* I don't want "collab" please */
+    ytd-rich-grid-renderer > #contents > ytd-rich-item-renderer.ytd-rich-grid-renderer:has(yt-avatar-stack-view-model) {
+        filter: grayscale(75%) opacity(10%);
+    }
+}
