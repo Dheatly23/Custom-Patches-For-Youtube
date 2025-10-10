@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.1
+@version        0.0.2
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -29,31 +29,10 @@
             width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) * 2 - 0.01px);
         }
 
-        /* Fuck membership 🖕 */
-        #contents {
-            > ytd-rich-item-renderer.ytd-rich-grid-renderer:has(ytd-badge-supported-renderer > .badge-style-type-members-only),
-            > ytd-item-section-renderer:has(> #contents > ytd-recognition-shelf-renderer) {
-                display: none;
-            }
-        }
-
-        /* Fix community post */
+        /* Community post full width */
         ytd-section-list-renderer > #contents > :is(ytd-backstage-items, ytd-comments) {
             max-width: 100%;
         }
-    }
-
-    /* Hide join button
-    ytd-video-owner-renderer.ytd-watch-metadata .ytd-video-owner-renderer,
-    tp-yt-app-header.ytd-c4-tabbed-header-renderer div#buttons > .ytd-c4-tabbed-header-renderer {
-        &#sponsor-button,
-        &#purchase-button {
-            display: none;
-        }
-    }
-    */
-    yt-page-header-view-model yt-flexible-actions-view-model > div:not(:has(yt-subscribe-button-view-model)) {
-        display: none;
     }
 
     /* Hide create button */
@@ -126,42 +105,12 @@
     /* Watch page */
     ytd-watch-flexy:not([hidden]) {
         #below {
-            /* Replace bullshit "clarify box" */
+            /* Fix border of "clarify box" */
             > #clarify-box > ytd-info-panel-container-renderer {
                 ytd-info-panel-content-renderer {
                     border-bottom-left-radius: borderRadius;
                     border-bottom-right-radius: borderRadius;
                 }
-
-                &:not(:hover) {
-                    h2 yt-formatted-string {
-                        &::before {
-                            /* Some hideous replacement here */
-                            content: "Youtube want to dictate your knowledge about \22";
-                        }
-
-                        &::after {
-                            /* Some hideous replacement here */
-                            content: "\22  (massive air quotes there 😉)";
-                        }
-                    }
-
-                    ytd-info-panel-content-renderer yt-attributed-string {
-                        > * {
-                            display: none;
-                        }
-
-                        &::after {
-                            /* Some hideous replacement here */
-                            content: "Youtube wants to tell you to fuck your agency right off. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text. 🤣 (Hover over to \22restore\22  to original)";
-                        }
-                    }
-                }
-            }
-
-            /* Hide useless AI "summary" */
-            > #expandable-metadata:has(> ytd-expandable-metadata-renderer) {
-                display: none;
             }
 
             /* Replace another bullshit box */
@@ -222,14 +171,6 @@
 
     /* Comments */
     ytd-comments > ytd-item-section-renderer > #contents {
-        /* NO_U */
-        > ytd-comment-thread-renderer.ytd-item-section-renderer {
-            &:has(yt-pdg-comment-chip-renderer:not([hidden])) {
-                display: none;
-                /* filter: grayscale(75%) opacity(10%); */
-            }
-        }
-
         /* No skeleton in my backyard */
         > ytd-continuation-item-renderer > #ghost-comment-section {
             display: none;

@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.0.1
+@version 1.1.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -10,11 +10,14 @@
 
 @preprocessor less
 @var select membersVideo "Membership Video" ["show", "hide", "soft-hide"]
+@var select fundraiserVideo "Fundraiser Video" ["show", "hide", "soft-hide"]
 @var select verifiedVideo "Verified Video" ["show", "hide", "soft-hide"]
 @var select superThanks "Super Thanks" ["show", "hide", "soft-hide"]
 @var select membersComment "Members Comment" ["show", "hide", "soft-hide"]
 @var select verifiedComment "Verified (and Artist) User Comment" ["show", "hide", "soft-hide"]
 @var select aiSummary "AI Summary" ["show", "hide", "soft-hide", "replace"]
+@var select clarifyBox "Info Box Underneath Video" ["show", "hide", "soft-hide", "replace"]
+@var select joinButton "Join Button" ["show", "hide"]
 ==/UserStyle== */
 
 @-moz-document domain("youtube.com") {
@@ -32,19 +35,34 @@
     /* Rest 👎 */
     .hide(@p) {}
 
-    /* Fuck membership */
-    ytd-rich-item-renderer.ytd-rich-grid-renderer:has(ytd-badge-supported-renderer > .badge-style-type-members-only) {
-        .hide(@membersVideo);
+    /* Subscription and channel videos */
+    ytd-rich-item-renderer.ytd-rich-grid-renderer {
+        /* Fuck membership */
+        &:has(ytd-badge-supported-renderer > .badge-style-type-members-only) {
+            .hide(@membersVideo);
+        }
+
+        /* Begone beggars */
+        &:has(ytd-badge-supported-renderer > .badge-style-type-ypc) {
+            .hide(@fundraiserVideo);
+        }
     }
 
-    /* Unverify raygun 🔫 */
-    yt-lockup-view-model.ytd-item-section-renderer:has(.yt-core-attributed-string .ytSpecIconShapeHost) {
-        .hide(@verifiedVideo);
+    /* Recommended video */
+    yt-lockup-view-model.ytd-item-section-renderer {
+        /* Begone beggars (this might be not too accurate selector) */
+        &:has(badge-shape.yt-badge-shape--commerce) {
+            .hide(@fundraiserVideo)
+        }
+
+        /* Unverify raygun 🔫 */
+        &:has(.yt-core-attributed-string .ytSpecIconShapeHost) {
+            .hide(@verifiedVideo);
+        }
     }
 
     /* Comment */
-    ytd-comment-thread-renderer.ytd-item-section-renderer,
-    ytd-comment-view-model.ytd-comment-replies-renderer {
+    :is(ytd-comment-thread-renderer.ytd-item-section-renderer, ytd-comment-view-model.ytd-comment-replies-renderer) {
         /* Fuck super thanks */
         &:has(yt-pdg-comment-chip-renderer:not([hidden])) {
             .hide(@superThanks);
@@ -119,6 +137,64 @@
             .hide(@v);
         }
 
-        .handle(@aiSummary)
+        .handle(@aiSummary);
+    }
+
+    /* Fuck your freedom to think */
+    #clarify-box.attached-message {
+        /* Hideous replacement here */
+        .handle(replace) {
+            &:not(:hover) {
+                h2 yt-formatted-string {
+                    &::before {
+                        content: "Youtube want to dictate your knowledge about \22";
+                    }
+
+                    &::after {
+                        content: "\22  (massive air quotes there 😉)";
+                    }
+                }
+
+                #paragraph {
+                    > * {
+                        display: none;
+                    }
+
+                    &::after {
+                        content: "Youtube wants to tell you to fuck your agency right off. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text. 🤣 (Hover over to \22restore\22  to original)";
+                    }
+                }
+
+                yt-formatted-string.disclaimer {
+                    > span:first-child {
+                        display: none;
+                    }
+
+                    &::before {
+                        content: "Disclaimer: Alphabet Inc. is wholly responsible for this 💩.";
+                    }
+
+                    > a:last-child::after {
+                        content: " (or don't)";
+                    }
+                }
+            }
+        }
+
+        .handle(@v) {
+            .hide(@v);
+        }
+
+        .handle(@clarifyBox);
+    }
+
+    /* Fuck membership x99 */
+    :is(yt-flexible-actions-view-model, ytd-video-owner-renderer) > div:has(button[aria-label = "Join this channel"]) {
+        .hide(@joinButton) !important;
+    }
+
+    /* Might not be exactly join "button" but it's fucking annoying */
+    ytd-item-section-renderer.ytd-section-list-renderer:has(> #contents > ytd-recognition-shelf-renderer) {
+        .hide(@joinButton);
     }
 }
