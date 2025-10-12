@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.2
+@version        0.0.3
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -33,11 +33,6 @@
         ytd-section-list-renderer > #contents > :is(ytd-backstage-items, ytd-comments) {
             max-width: 100%;
         }
-    }
-
-    /* Hide create button */
-    ytd-masthead #buttons.ytd-masthead > ytd-button-renderer.ytd-masthead:has(button[aria-label = "Create"]) {
-        display: none;
     }
 
     /* Patch margins */
@@ -185,9 +180,7 @@
         }
 
         /* Hide spoilery search thumbnail */
-        > div.ytSearchboxComponentSuggestionsContainer > div.ytSuggestionComponentSuggestion > div.ytSuggestionComponentRightContainer:has(> div.ytSuggestionComponentThumbnailContainer),
-        /* Hide mic button */
-        ~ #voice-search-button {
+        > div.ytSearchboxComponentSuggestionsContainer > div.ytSuggestionComponentSuggestion > div.ytSuggestionComponentRightContainer:has(> div.ytSuggestionComponentThumbnailContainer) {
             display: none;
         }
     }

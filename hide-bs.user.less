@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.1.0
+@version 1.2.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -14,10 +14,15 @@
 @var select verifiedVideo "Verified Video" ["show", "hide", "soft-hide"]
 @var select superThanks "Super Thanks" ["show", "hide", "soft-hide"]
 @var select membersComment "Members Comment" ["show", "hide", "soft-hide"]
+@var select heartComment "Hearted Comment" ["show", "hide", "soft-hide"]
 @var select verifiedComment "Verified (and Artist) User Comment" ["show", "hide", "soft-hide"]
+@var select pinnedComment "Pinned Comment" ["show", "hide", "soft-hide"]
+@var select upsellEmoji "Members Only Emoji" ["show", "hide", "soft-hide"]
 @var select aiSummary "AI Summary" ["show", "hide", "soft-hide", "replace"]
 @var select clarifyBox "Info Box Underneath Video" ["show", "hide", "soft-hide", "replace"]
-@var select joinButton "Join Button" ["show", "hide"]
+@var select joinButton "Join Button" ["show", "hide", "soft-hide"]
+@var select createButton "Create Button" ["show", "hide", "soft-hide"]
+@var select mikeSearchButton "Mike Button Beside Search Box" ["show", "hide", "soft-hide"]
 ==/UserStyle== */
 
 @-moz-document domain("youtube.com") {
@@ -35,6 +40,40 @@
     /* Rest 👎 */
     .hide(@p) {}
 
+    /* Replace 🥰 */
+    .replace(before, @text, @sel: "> *") {
+        @temp: e(@sel);
+        @{temp} {
+            display: none;
+        }
+
+        &::before {
+            content: @text;
+        }
+    }
+
+    .replace(after, @text, @sel: "> *") {
+        @temp: e(@sel);
+        @{temp} {
+            display: none;
+        }
+
+        &::after {
+            content: @text;
+        }
+    }
+
+    /* Sandwich replace 🥪 */
+    .sandwich(@before, @after) {
+        &::before {
+            content: @before;
+        }
+
+        &::after {
+            content: @after;
+        }
+    }
+
     /* Subscription and channel videos */
     ytd-rich-item-renderer.ytd-rich-grid-renderer {
         /* Fuck membership */
@@ -46,13 +85,19 @@
         &:has(ytd-badge-supported-renderer > .badge-style-type-ypc) {
             .hide(@fundraiserVideo);
         }
+
+        /* Unverify raygun 🔫 */
+        &:has(.yt-core-attributed-string .ytSpecIconShapeHost) {
+            .hide(@verifiedVideo);
+        }
     }
 
     /* Recommended video */
     yt-lockup-view-model.ytd-item-section-renderer {
+        /* Haven't seen any members-only video got recommended yet (thank goodness 😇) */
         /* Begone beggars (this might be not too accurate selector) */
         &:has(badge-shape.yt-badge-shape--commerce) {
-            .hide(@fundraiserVideo)
+            .hide(@fundraiserVideo);
         }
 
         /* Unverify raygun 🔫 */
@@ -61,70 +106,72 @@
         }
     }
 
-    /* Comment */
-    :is(ytd-comment-thread-renderer.ytd-item-section-renderer, ytd-comment-view-model.ytd-comment-replies-renderer) {
-        /* Fuck super thanks */
-        &:has(yt-pdg-comment-chip-renderer:not([hidden])) {
-            .hide(@superThanks);
+    /* Template for comment */
+    .comment(@v) {
+        /* Entire comment thread */
+        ytd-comment-thread-renderer.ytd-item-section-renderer:has(ytd-comment-view-model.ytd-comment-thread-renderer &),
+        /* Comment reply */
+        ytd-comment-view-model.ytd-comment-replies-renderer:has(&) {
+            .hide(@v);
         }
+    }
 
-        /* Members gets findommed */
-        &:has(ytd-sponsor-comment-badge-renderer) {
-            .hide(@membersComment);
-        }
+    /* Fuck super thanks */
+    yt-pdg-comment-chip-renderer:not([hidden]) {
+        .comment(@superThanks);
+    }
 
-        /* Verify my ass */
-        &:has(ytd-author-comment-badge-renderer) {
-            .hide(@verifiedComment);
-        }
+    /* Members gets findommed */
+    ytd-sponsor-comment-badge-renderer {
+        .comment(@membersComment);
+    }
+
+    /* Fuck preferential treatment */
+    ytd-creator-heart-renderer:not(:empty) {
+        .comment(@heartComment);
+    }
+
+    /* Verify my ass */
+    ytd-author-comment-badge-renderer {
+        .comment(@verifiedComment);
+    }
+
+    /* Pin::into_inner_unchecked */
+    ytd-pinned-comment-badge-renderer {
+        .comment(@pinnedComment);
+    }
+
+    /* Motherfucking LINE sticker clone from Tokopedia (╯‵□′)╯︵┻━┻ */
+    yt-emoji-picker-upsell-category-renderer.yt-emoji-picker-renderer {
+        .hide(@upsellEmoji);
     }
 
     /* Super chat (pending) */
     /* Artificial Idiot box is back in style 😎 */
-    ytd-expandable-metadata-renderer:has(video-summary-content-view-model) {
+    ytd-expandable-metadata-renderer.ytd-watch-flexy:has(video-summary-content-view-model) {
         /* Hideous replacement here */
         .handle(replace) {
             &:not(:hover) {
                 #expanded-title-subtitle-text {
                     > #expanded-title:first-child {
-                        > * {
-                            display: none;
-                        }
-
-                        &::before {
-                            content: "🤖 Beep Boop I Am An Idiot";
-                        }
+                        .replace(before, "🤖 Beep Boop I Am An Idiot");
                     }
 
                     > #expanded-subtitle > a {
-                        > yt-formatted-string {
-                            display: none;
-                        }
-
-                        &::before {
-                            content: "Youtube did not do QA";
-                        }
+                        .replace(before, "Youtube did not do QA", "yt-formatted-string:first-child");
                     }
                 }
 
                 #collapsed-label {
-                    > yt-formatted-string {
-                        display: none;
-                    }
-
-                    &::after {
-                        content: "Retard Box";
-                    }
+                    .replace(after, "Retard Box", "yt-formatted-string");
                 }
 
-                :is(#collapsed-title, p) {
-                    > * {
-                        display: none;
-                    }
+                p {
+                    .replace(after, "Youtube wants to artificially sand your intelligence off. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text 🤪. (Hover over to \22restore\22  to original)");
+                }
 
-                    &::after {
-                        content: "Youtube wants to artificially sand your intelligence off. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text 🤪. (Hover over to \22restore\22  to original)";
-                    }
+                #collapsed-title {
+                    .replace(after, "⛔ Spoiler blocker ⛔ (Hover over to \22restore\22  to original)");
                 }
 
                 like-button-view-model {
@@ -146,23 +193,11 @@
         .handle(replace) {
             &:not(:hover) {
                 h2 yt-formatted-string {
-                    &::before {
-                        content: "Youtube want to dictate your knowledge about \22";
-                    }
-
-                    &::after {
-                        content: "\22  (massive air quotes there 😉)";
-                    }
+                    .sandwich("Youtube want to dictate your knowledge about \22", "\22  (massive air quotes there 😉)");
                 }
 
                 #paragraph {
-                    > * {
-                        display: none;
-                    }
-
-                    &::after {
-                        content: "Youtube wants to tell you to fuck your agency right off. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text. 🤣 (Hover over to \22restore\22  to original)";
-                    }
+                    .replace(after, "Youtube wants to tell you to fuck your agency right off. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text 🤣. (Hover over to \22restore\22  to original)");
                 }
 
                 yt-formatted-string.disclaimer {
@@ -188,13 +223,28 @@
         .handle(@clarifyBox);
     }
 
-    /* Fuck membership x99 */
-    :is(yt-flexible-actions-view-model, ytd-video-owner-renderer) > div:has(button[aria-label = "Join this channel"]) {
-        .hide(@joinButton) !important;
+    /* Fuck membership x💯 */
+    yt-flexible-actions-view-model,
+    ytd-video-owner-renderer.ytd-watch-metadata {
+        > div:has(button[aria-label = "Join this channel"]) {
+            .hide(@joinButton) !important;
+        }
     }
 
-    /* Might not be exactly join "button" but it's fucking annoying */
-    ytd-item-section-renderer.ytd-section-list-renderer:has(> #contents > ytd-recognition-shelf-renderer) {
+    /* Might not be exactly join "button" but it's fucking annoying
+     * (To future maintainer, it's a members showcase thingy in channel homepage)
+    **/
+    ytd-item-section-renderer.ytd-section-list-renderer:has(ytd-recognition-shelf-renderer) {
         .hide(@joinButton);
+    }
+
+    /* Fuschia is not a creative color */
+    ytd-button-renderer.ytd-masthead:has(button[aria-label = "Create"]) {
+        .hide(@createButton) !important;
+    }
+
+    /* Who the fuck use voice search 🤨 */
+    #voice-search-button.ytd-masthead:has(button[aria-label = "Search with your voice"]) {
+        .hide(@mikeSearchButton) !important;
     }
 }

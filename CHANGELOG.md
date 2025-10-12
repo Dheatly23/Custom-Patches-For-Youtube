@@ -3,6 +3,22 @@
 
 ## Hide Youtube BS
 
+### v1.2.0
+
+#### Additions
+
+- Add more comment filters.
+- Add members-only emojis.
+- Add create and voice search button.
+
+#### Changes
+
+- Change some replacements.
+
+#### Fixes
+
+- Fix comment thread got filtered because of reply.
+
 ### v1.1.0
 
 #### Additions
@@ -17,7 +33,7 @@
 
 ### v1.0.1
 
-#### Changes
+#### Fixes
 
 - Fix comment reply button not hidden.
 
