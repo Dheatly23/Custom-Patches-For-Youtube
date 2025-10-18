@@ -24,6 +24,11 @@ Then this userstyle is for you!
 You can hide, filter out, or censor out it's content.
 Marie Kondo your Youtube experience, the way it's meant to be.
 
+### Restore Old Youtube End Screen Grid
+
+Youtube hides the old grid view with V key.
+This userstyle restores it so you don't have to press v everytime.
+
 ### Miscellaneous Patches for Youtube
 
 Source: `misc.user.css`

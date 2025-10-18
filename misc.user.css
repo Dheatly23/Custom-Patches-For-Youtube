@@ -99,6 +99,23 @@
 
     /* Watch page */
     ytd-watch-flexy:not([hidden]) {
+        ytd-player > #container > #movie_player {
+            /* Fix margin */
+            > .ytp-chrome-bottom > .ytp-chrome-controls > .ytp-left-controls > .ytp-play-button {
+                margin-top: 0px;
+            }
+
+            /* Fix tooltip (also partial revert) */
+            > .ytp-tooltip {
+                padding: 0px;
+
+                &,
+                * {
+                    border-radius: borderRadius;
+                }
+            }
+        }
+
         #below {
             /* Fix border of "clarify box" */
             > #clarify-box > ytd-info-panel-container-renderer {
@@ -154,12 +171,7 @@
         }
 
         /* Weird channel in related */
-        #related #contents > ytd-channel-renderer,
-        yt-button-view-model:has(button:is(/* No save button */
-        [aria-label = "Save to playlist"],
-        /* No share button */
-        [aria-label = "Share"],
-        )) {
+        #related #contents > ytd-channel-renderer {
             display: none;
         }
     }
@@ -174,13 +186,12 @@
 
     yt-searchbox {
         /* Fix search box */
-        > div.ytSearchboxComponentInputBox,
-        > button.ytSearchboxComponentSearchButton {
-            border-radius: profileRadius;
+        > :is(.ytSearchboxComponentInputBox, .ytSearchboxComponentSearchButton, .ytSearchboxComponentSuggestionsContainer) {
+            border-radius: borderRadius;
         }
 
         /* Hide spoilery search thumbnail */
-        > div.ytSearchboxComponentSuggestionsContainer > div.ytSuggestionComponentSuggestion > div.ytSuggestionComponentRightContainer:has(> div.ytSuggestionComponentThumbnailContainer) {
+        > .ytSearchboxComponentSuggestionsContainer > .ytSuggestionComponentSuggestion > .ytSuggestionComponentRightContainer:has(> .ytSuggestionComponentThumbnailContainer) {
             display: none;
         }
     }

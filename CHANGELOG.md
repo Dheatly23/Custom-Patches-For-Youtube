@@ -3,6 +3,28 @@
 
 ## Hide Youtube BS
 
+### v1.3.0
+
+#### Additions
+
+- Add auto-dub video.
+- Add super thanks button.
+- Add share button.
+- Add download button.
+- Add save button.
+- Add clip button.
+
+#### Changes
+
+- Change selectors for recommended video.
+- Change selector for comment thread.
+- Change selectors for many buttons.
+- Rename super thanks comment variable. It might get reset between update.
+
+#### Fixes
+
+- Fix old compact style recommended video not targeted.
+
 ### v1.2.0
 
 #### Additions
@@ -36,6 +58,12 @@
 #### Fixes
 
 - Fix comment reply button not hidden.
+
+### v1.0.0
+
+First launch.
+
+## Restore Old Youtube End Screen Grid
 
 ### v1.0.0
 
