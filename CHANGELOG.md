@@ -3,6 +3,22 @@
 
 ## Hide Youtube BS
 
+### v1.4.0
+
+#### Additions
+
+- Add voice chat.
+- Add super chat.
+- Add members chat.
+- Add moderator chat.
+- Add chat notice box.
+- Add super chat button.
+
+#### Changes
+
+- Change selectors for subscription video.
+- Split new and old recommended video style.
+
 ### v1.3.0
 
 #### Additions

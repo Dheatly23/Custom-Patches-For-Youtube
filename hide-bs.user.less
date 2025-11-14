@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.3.0
+@version 1.4.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -18,11 +18,17 @@
 @var select heartComment "Hearted Comment" ["show", "hide", "soft-hide"]
 @var select verifiedComment "Verified (and Artist) User Comment" ["show", "hide", "soft-hide"]
 @var select pinnedComment "Pinned Comment" ["show", "hide", "soft-hide"]
+@var select voiceComment "Voice Comment" ["show", "hide", "soft-hide"]
 @var select upsellEmoji "Members Only Emoji" ["show", "hide", "soft-hide"]
+@var select superChat "Super Chat" ["show", "hide", "soft-hide"]
+@var select membersChat "Members Chat" ["show", "hide", "soft-hide"]
+@var select moderatorChat "Moderator Chat" ["show", "hide", "soft-hide"]
 @var select aiSummary "AI Summary" ["show", "hide", "soft-hide", "replace"]
 @var select clarifyBox "Info Box Underneath Video" ["show", "hide", "soft-hide", "replace"]
+@var select chatInfoBox "Live Chat Notice Box" ["show", "hide", "soft-hide", "replace"]
 @var select joinButton "Join Button" ["show", "hide", "soft-hide"]
 @var select superThanksButton "Super Thanks Button" ["show", "hide", "soft-hide"]
+@var select superChatButton "Super Chat Button" ["show", "hide", "soft-hide"]
 @var select shareButton "Share Button" ["show", "hide", "soft-hide"]
 @var select downloadButton "Download Button" ["show", "hide", "soft-hide"]
 @var select saveButton "Save Button" ["show", "hide", "soft-hide"]
@@ -76,12 +82,12 @@
     /* Subscription and channel videos */
     ytd-rich-item-renderer.ytd-rich-grid-renderer {
         /* Fuck membership */
-        &:has(ytd-badge-supported-renderer > .badge-style-type-members-only) {
+        &:has(ytd-badge-supported-renderer > [aria-label ^= "Members"]) {
             .hide(@membersVideo);
         }
 
         /* Begone beggars */
-        &:has(ytd-badge-supported-renderer > .badge-style-type-ypc) {
+        &:has(ytd-badge-supported-renderer > [aria-label = "Fundraiser"]) {
             .hide(@fundraiserVideo);
         }
 
@@ -92,27 +98,37 @@
     }
 
     /* Recommended video */
-    yt-lockup-view-model.ytd-item-section-renderer,
-    /* Probably remnant of an old UI? Only seen it for shorts */
-    ytd-compact-video-renderer.ytd-item-section-renderer {
+    yt-lockup-view-model.ytd-item-section-renderer {
         /* Haven't seen any members-only video got recommended yet (thank goodness 😇) */
         /* Begone beggars (this might be not too accurate selector) */
-        &:has(badge-shape.yt-badge-shape--commerce),
-        /* Probably remnant of an old UI? (ARIA label is only predicted lmao) */
-        &:has(ytd-badge-supported-renderer.badges > [aria-label = "Fundraiser"]) {
+        &:has(badge-shape.yt-badge-shape--commerce) {
             .hide(@fundraiserVideo);
         }
 
         /* Fuck AI dubbing (i don't like d attribute selector but ehhhhhhhhhhh) */
-        &:has(badge-shape.yt-badge-shape--default > .yt-badge-shape__icon svg [d = "M19.4.2a1 1 0 00-.2 1.4 9 9 0 01-.022 10.83 1 1 0 001.595 1.206A11 11 0 0020.8.4a1 1 0 00-1.4-.2ZM10 2a5 5 0 100 10 5 5 0 000-10Zm6.17.3a1 1 0 00-.028 1.414c.895.932 1.365 2.114 1.358 3.312-.006 1.199-.49 2.378-1.396 3.302a1.001 1.001 0 101.427 1.4c1.257-1.281 1.959-2.953 1.969-4.69.009-1.738-.673-3.416-1.916-4.71A1 1 0 0016.17 2.3ZM10 13a8 8 0 00-8 8 1 1 0 001 1h14l.102-.005A1 1 0 0018 21a8 8 0 00-8-8Z"]),
-        /* Probably remnant of an old UI? */
-        &:has(ytd-badge-supported-renderer.badges > [aria-label = "Auto-dubbed"]) {
+        &:has(badge-shape.yt-badge-shape--default > .yt-badge-shape__icon svg [d = "M19.4.2a1 1 0 00-.2 1.4 9 9 0 01-.022 10.83 1 1 0 001.595 1.206A11 11 0 0020.8.4a1 1 0 00-1.4-.2ZM10 2a5 5 0 100 10 5 5 0 000-10Zm6.17.3a1 1 0 00-.028 1.414c.895.932 1.365 2.114 1.358 3.312-.006 1.199-.49 2.378-1.396 3.302a1.001 1.001 0 101.427 1.4c1.257-1.281 1.959-2.953 1.969-4.69.009-1.738-.673-3.416-1.916-4.71A1 1 0 0016.17 2.3ZM10 13a8 8 0 00-8 8 1 1 0 001 1h14l.102-.005A1 1 0 0018 21a8 8 0 00-8-8Z"]) {
             .hide(@autoDubVideo);
         }
 
         /* Unverify raygun 🔫 */
-        &:has(.yt-core-attributed-string .ytSpecIconShapeHost),
-        /* Probably remnant of an old UI? */
+        &:has(.yt-core-attributed-string .ytSpecIconShapeHost) {
+            .hide(@verifiedVideo);
+        }
+    }
+
+    /* Probably remnant of an old UI? Only seen it for shorts */
+    ytd-compact-video-renderer.ytd-item-section-renderer {
+        /* Begone beggars (ARIA label is only predicted lmao) */
+        &:has(ytd-badge-supported-renderer.ytd-compact-video-renderer > [aria-label = "Fundraiser"]) {
+            .hide(@fundraiserVideo);
+        }
+
+        /* Fuck AI dubbing (i don't like d attribute selector but ehhhhhhhhhhh) */
+        &:has(ytd-badge-supported-renderer.ytd-compact-video-renderer > [aria-label = "Auto-dubbed"]) {
+            .hide(@autoDubVideo);
+        }
+
+        /* Unverify raygun 🔫 */
         &:has(ytd-badge-supported-renderer.ytd-channel-name > [aria-label = "Verified"]) {
             .hide(@verifiedVideo);
         }
@@ -153,9 +169,56 @@
         .comment(@pinnedComment);
     }
 
+    /* Fucking hate those mobile-only "feature" */
+    ytd-comment-view-model:is(.ytd-comment-thread-renderer,
+    .ytd-comment-replies-renderer)[has-voice-reply] {
+        .hide(@voiceComment);
+    }
+
     /* Motherfucking LINE sticker clone from Tokopedia (╯‵□′)╯︵┻━┻ */
     yt-emoji-picker-upsell-category-renderer.yt-emoji-picker-renderer {
         .hide(@upsellEmoji);
+    }
+
+    /* Your supachatto is useless here 😈 */
+    yt-live-chat-paid-message-renderer.yt-live-chat-item-list-renderer {
+        .hide(@superChat);
+    }
+
+    /* Live chat */
+    yt-live-chat-text-message-renderer.yt-live-chat-item-list-renderer {
+        /* Fuck your membership in particular */
+        &:has(yt-live-chat-author-badge-renderer[type = "member"]) {
+            .hide(@membersChat);
+        }
+
+        /* Moderator? More like instigator amirite. */
+        &:has(yt-live-chat-author-badge-renderer[aria-label = "Moderator"]) {
+            .hide(@moderatorChat);
+        }
+    }
+
+    /* Youtube chat is some of the most retarded alive */
+    yt-live-chat-viewer-engagement-message-renderer.yt-live-chat-item-list-renderer {
+        /* Hideous replacement here */
+        .handle(replace) {
+            &:not(:hover) {
+                #message-container {
+                    .replace(after,
+                    "Youtube wants to fuck over your right to troll! Do crime, be gay, fuck \22 community\22  guidelines 😎. (Hover over to \22restore\22  to original)");
+                }
+
+                #action-button > yt-button-renderer.yt-live-chat-viewer-engagement-message-renderer {
+                    .hide(soft-hide);
+                }
+            }
+        }
+
+        .handle(@v) {
+            .hide(@v);
+        }
+
+        .handle(@chatInfoBox);
     }
 
     /* Super chat (pending) */
@@ -268,6 +331,11 @@
         &:has(> button-view-model > button[aria-label = "Clip"]) {
             .hide(@clipButton);
         }
+    }
+
+    /* No thanks and you're not super 🦸‍♂️🤚 */
+    #picker-buttons.yt-live-chat-message-input-renderer:not([hidden]) {
+        .hide(@superChatButton);
     }
 
     /* YT-DLP FTW!!!!! 😎 */
