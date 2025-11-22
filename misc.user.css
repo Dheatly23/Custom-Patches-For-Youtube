@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.4
+@version        0.0.5
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -17,49 +17,34 @@
 
 ==/UserStyle== */
 @-moz-document domain("www.youtube.com") {
-    [page-subtype = "channels"] {
-        /* Fix margins */
-        --ytd-rich-grid-item-margin: 4px;
-        --ytd-rich-grid-row-margin: 4px;
+    /* Fix margins */
+    ytd-rich-item-renderer:is(.ytd-rich-grid-renderer, .ytd-rich-shelf-renderer) {
+        margin-left: calc(var(--ytd-rich-grid-item-margin) / 2);
+        margin-right: calc(var(--ytd-rich-grid-item-margin) / 2);
+        margin-bottom: calc(var(--ytd-rich-grid-item-margin) / 2);
+    }
 
-        ytd-rich-item-renderer.ytd-rich-grid-renderer:not([is-shelf-item]) {
-            margin-left: calc(var(--ytd-rich-grid-item-margin) / 2);
-            margin-right: calc(var(--ytd-rich-grid-item-margin) / 2);
-            margin-bottom: calc(var(--ytd-rich-grid-item-margin) / 2);
-            width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) * 2 - 0.01px);
-        }
+    ytd-rich-item-renderer.ytd-rich-grid-renderer:not([is-shelf-item]) {
+        width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) * 2 - 0.01px);
+    }
 
-        /* Community post full width */
-        ytd-section-list-renderer > #contents > :is(ytd-backstage-items, ytd-comments) {
-            max-width: 100%;
+    ytd-rich-item-renderer.ytd-rich-shelf-renderer[is-shelf-item] {
+        width: calc(100% / var(--ytd-rich-grid-slim-items-per-row) - var(--ytd-rich-grid-item-margin) * 2 - 0.01px);
+        /* Patch shorts */
+        &:not([hidden]) {
+            display: block !important;
         }
     }
 
-    /* Patch margins */
+    [page-subtype = "channels"],
     [page-subtype = "subscriptions"] {
-        ytd-rich-grid-renderer {
-            #contents {
-                --ytd-rich-grid-item-margin: 4px;
-            }
+        --ytd-rich-grid-item-margin: 4px !important;
+        --ytd-rich-grid-row-margin: 4px !important;
+    }
 
-            ytd-rich-item-renderer:not([is-shelf-item]) {
-                margin-left: calc(var(--ytd-rich-grid-item-margin) / 2);
-                margin-right: calc(var(--ytd-rich-grid-item-margin) / 2);
-                margin-bottom: calc(var(--ytd-rich-grid-item-margin) / 2);
-                width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) * 2 - 0.01px);
-            }
-
-            #contents #contents > ytd-rich-item-renderer[is-shelf-item] {
-                margin-left: calc(var(--ytd-rich-grid-item-margin) / 2);
-                margin-right: calc(var(--ytd-rich-grid-item-margin) / 2);
-                margin-bottom: calc(var(--ytd-rich-grid-item-margin) / 2);
-                width: calc(100% / var(--ytd-rich-grid-slim-items-per-row) - var(--ytd-rich-grid-item-margin) * 2 - 0.01px);
-                /* Patch shorts */
-                &:not([hidden]) {
-                    display: block !important;
-                }
-            }
-        }
+    /* Community post full width */
+    [page-subtype = "channels"] ytd-section-list-renderer > #contents > :is(ytd-backstage-items, ytd-comments) {
+        max-width: 100%;
     }
 
     /* Reduce padding on about
@@ -77,13 +62,10 @@
         }
     }
 
-    /* Fix channel banner */
-    yt-image-banner-view-model {
-        border-radius: borderRadius !important;
-    }
-
+    :is(/* Fix channel banner */
+    yt-image-banner-view-model,
     /* Fix video thumbnail */
-    yt-thumbnail-view-model {
+    yt-thumbnail-view-model) {
         border-radius: borderRadius !important;
     }
 
@@ -97,14 +79,14 @@
         border-radius: buttonRadius;
     }
 
+    /* Fix border for extra stuff in description */
+    .ytVideoMetadataCarouselViewModelHost {
+        border-radius: borderRadius;
+    }
+
     /* Watch page */
     ytd-watch-flexy:not([hidden]) {
         ytd-player > #container > #movie_player {
-            /* Fix margin */
-            > .ytp-chrome-bottom > .ytp-chrome-controls > .ytp-left-controls > .ytp-play-button {
-                margin-top: 0px;
-            }
-
             /* Fix tooltip (also partial revert) */
             > .ytp-tooltip {
                 padding: 0px;
@@ -113,6 +95,11 @@
                 * {
                     border-radius: borderRadius;
                 }
+            }
+
+            /* Hide fullscreen quick action BS */
+            > .ytp-overlays-container > .ytp-overlay-bottom-right > .ytp-fullscreen-quick-actions {
+                display: none;
             }
         }
 
@@ -165,7 +152,7 @@
             }
 
             /* More marie kondo */
-            > #ticket-shelf {
+            > :is(#ticket-shelf, #shopping-timely-shelf) {
                 display: none;
             }
         }
@@ -244,8 +231,36 @@
         display: none;
     }
 
-    /* I don't want "collab" please */
-    ytd-rich-grid-renderer > #contents > ytd-rich-item-renderer.ytd-rich-grid-renderer:has(yt-avatar-stack-view-model) {
-        filter: grayscale(75%) opacity(10%);
+    /* Video popup menu */
+    .ytp-popup,
+    /* Recommended video popup menu */
+    .ytSheetViewModelContextual {
+        /* Fix corner */
+        border-radius: borderRadius !important;
+        /* Unblur */
+        backdrop-filter: unset !important;
+    }
+
+    /* Fix corner for menu */
+    tp-yt-paper-item.ytd-menu-service-item-renderer {
+        border-radius: 0px !important;
+    }
+
+    /* Blur override */
+    :root {
+        --yt-frosted-glass-backdrop-filter-override: none;
+    }
+
+    /* Buttons in recommended video */
+    yt-thumbnail-hover-overlay-toggle-actions-view-model button {
+        /* Fix corner */
+        border-radius: buttonRadius !important;
+        /* Unblur */
+        backdrop-filter: unset !important;
+    }
+
+    /* Tiny pp energy 🤏🍆 */
+    :is(yt-lockup-view-model.ytd-item-section-renderer, ytd-rich-item-renderer.ytd-rich-grid-renderer):not(:hover) a[href *= "&pp="] > yt-thumbnail-view-model img {
+        filter: grayscale(100%) blur(2px);
     }
 }

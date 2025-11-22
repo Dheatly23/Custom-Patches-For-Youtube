@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.4.0
+@version 1.5.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -13,6 +13,7 @@
 @var select fundraiserVideo "Fundraiser Video" ["show", "hide", "soft-hide"]
 @var select autoDubVideo "Auto Dubbed Video" ["show", "hide", "soft-hide"]
 @var select verifiedVideo "Verified Video" ["show", "hide", "soft-hide"]
+@var select collabVideo "Collab Video (might not be perfect)" ["show", "hide", "soft-hide"]
 @var select superThanksComment "Super Thanks Comment" ["show", "hide", "soft-hide"]
 @var select membersComment "Members Comment" ["show", "hide", "soft-hide"]
 @var select heartComment "Hearted Comment" ["show", "hide", "soft-hide"]
@@ -35,6 +36,7 @@
 @var select clipButton "Clip Button" ["show", "hide", "soft-hide"]
 @var select createButton "Create Button" ["show", "hide", "soft-hide"]
 @var select mikeSearchButton "Mike Button Beside Search Box" ["show", "hide", "soft-hide"]
+@var select aiButton "AI Button" ["show", "hide", "soft-hide"]
 ==/UserStyle== */
 
 @-moz-document domain("youtube.com") {
@@ -82,17 +84,17 @@
     /* Subscription and channel videos */
     ytd-rich-item-renderer.ytd-rich-grid-renderer {
         /* Fuck membership */
-        &:has(ytd-badge-supported-renderer > [aria-label ^= "Members"]) {
+        &:has(ytd-badge-supported-renderer.ytd-rich-grid-media > div > badge-shape[aria-label ^= "Members"]) {
             .hide(@membersVideo);
         }
 
         /* Begone beggars */
-        &:has(ytd-badge-supported-renderer > [aria-label = "Fundraiser"]) {
+        &:has(ytd-badge-supported-renderer.ytd-rich-grid-media > div > badge-shape[aria-label = "Fundraiser"]) {
             .hide(@fundraiserVideo);
         }
 
         /* Unverify raygun 🔫 */
-        &:has(.yt-core-attributed-string .ytSpecIconShapeHost) {
+        &:has(yt-content-metadata-view-model > div:first-child svg) {
             .hide(@verifiedVideo);
         }
     }
@@ -111,7 +113,7 @@
         }
 
         /* Unverify raygun 🔫 */
-        &:has(.yt-core-attributed-string .ytSpecIconShapeHost) {
+        &:has(yt-content-metadata-view-model > div:first-child svg) {
             .hide(@verifiedVideo);
         }
     }
@@ -119,18 +121,26 @@
     /* Probably remnant of an old UI? Only seen it for shorts */
     ytd-compact-video-renderer.ytd-item-section-renderer {
         /* Begone beggars (ARIA label is only predicted lmao) */
-        &:has(ytd-badge-supported-renderer.ytd-compact-video-renderer > [aria-label = "Fundraiser"]) {
+        &:has(ytd-badge-supported-renderer.ytd-compact-video-renderer > div > badge-shape[aria-label = "Fundraiser"]) {
             .hide(@fundraiserVideo);
         }
 
-        /* Fuck AI dubbing (i don't like d attribute selector but ehhhhhhhhhhh) */
-        &:has(ytd-badge-supported-renderer.ytd-compact-video-renderer > [aria-label = "Auto-dubbed"]) {
+        /* Fuck AI dubbing */
+        &:has(ytd-badge-supported-renderer.ytd-compact-video-renderer > div > badge-shape[aria-label = "Auto-dubbed"]) {
             .hide(@autoDubVideo);
         }
 
         /* Unverify raygun 🔫 */
-        &:has(ytd-badge-supported-renderer.ytd-channel-name > [aria-label = "Verified"]) {
+        &:has(ytd-badge-supported-renderer.ytd-channel-name > div > badge-shape[aria-label = "Verified"]) {
             .hide(@verifiedVideo);
+        }
+    }
+
+    /* Collab? More like shitting all over my feed 🤬 */
+    ytd-rich-item-renderer.ytd-rich-grid-renderer,
+    yt-lockup-view-model.ytd-item-section-renderer {
+        &:has(yt-avatar-stack-view-model) {
+            .hide(@collabVideo);
         }
     }
 
@@ -192,7 +202,7 @@
             .hide(@membersChat);
         }
 
-        /* Moderator? More like instigator amirite. */
+        /* Moderator? More like instigator amirite */
         &:has(yt-live-chat-author-badge-renderer[aria-label = "Moderator"]) {
             .hide(@moderatorChat);
         }
@@ -251,6 +261,43 @@
 
                 like-button-view-model {
                     display: none;
+                }
+            }
+        }
+
+        .handle(@v) {
+            .hide(@v);
+        }
+
+        .handle(@aiSummary);
+    }
+
+    /* Dumb & indoctrinated by big tech */
+    #teaser-carousel.ytd-watch-metadata:has(yt-carousel-item-view-model[aria-label = "Ask & learn"]) {
+        /* Hideous replacement here */
+        .handle(replace) {
+            &:not(:hover) {
+                yt-carousel-title-view-model > div {
+                    font-size: 1.4rem;
+                    line-height: 2rem;
+                    font-weight: 500;
+
+                    .replace(after, "Dumb & Indoctrinate");
+                }
+
+                yt-text-carousel-item-view-model {
+                    > span.yt-core-attributed-string {
+                        font-size: calc(1.4rem * 0.8);
+                        line-height: calc(2rem * 0.8);
+                        max-height: 6rem;
+                        -webkit-line-clamp: unset;
+
+                        .replace(after, "Ministry of truth wants you to submit to AI overlords. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text 😁. (Hover over to \22restore\22  to original)");
+                    }
+
+                    > button-view-model {
+                        display: none;
+                    }
                 }
             }
         }
@@ -330,6 +377,11 @@
         /* Clip my goatse */
         &:has(> button-view-model > button[aria-label = "Clip"]) {
             .hide(@clipButton);
+        }
+
+        /* Unbuttons your AI 😲 */
+        &:has(> button-view-model > button[aria-label = "Ask"]) {
+            .hide(@aiButton);
         }
     }
 

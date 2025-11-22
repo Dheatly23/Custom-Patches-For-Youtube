@@ -3,6 +3,18 @@
 
 ## Hide Youtube BS
 
+### v1.5.0
+
+#### Additions
+
+- Add AI button.
+- Add collab video (partial support).
+- Add replacement for ask & learn box.
+
+#### Fixes
+
+- Fix videos not working.
+
 ### v1.4.0
 
 #### Additions
