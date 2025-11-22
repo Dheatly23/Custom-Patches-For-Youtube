@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.5
+@version        0.0.6
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -14,12 +14,11 @@
 @var range profileRadius               "  ⚙️ Profiles Radius" [50, 0, 50, 1, '%']
 @var checkbox  searchSideDisable        "Disable search sidebar" 0
 @var text  searchSideWidth             "Sidebar width" 100px
-
 ==/UserStyle== */
 @-moz-document domain("www.youtube.com") {
     /* Fix margins */
     ytd-rich-item-renderer:is(.ytd-rich-grid-renderer, .ytd-rich-shelf-renderer) {
-        margin-left: calc(var(--ytd-rich-grid-item-margin) / 2);
+        margin-left: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
         margin-right: calc(var(--ytd-rich-grid-item-margin) / 2);
         margin-bottom: calc(var(--ytd-rich-grid-item-margin) / 2);
     }
@@ -37,7 +36,7 @@
     }
 
     [page-subtype = "channels"],
-    [page-subtype = "subscriptions"] {
+    [page-subtype = "subscriptions"] :is(ytd-rich-grid-renderer, ytd-rich-shelf-renderer) {
         --ytd-rich-grid-item-margin: 4px !important;
         --ytd-rich-grid-row-margin: 4px !important;
     }
