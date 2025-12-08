@@ -3,6 +3,19 @@
 
 ## Hide Youtube BS
 
+### v1.6.0
+
+#### Additions
+
+- Add shorts comment.
+- Add thingy beside description.
+- Add ticker above live chat.
+- Add new member announcement.
+
+#### Changes
+
+- Change ask AI box.
+
 ### v1.5.0
 
 #### Additions

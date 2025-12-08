@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.5.0
+@version 1.6.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -20,6 +20,7 @@
 @var select verifiedComment "Verified (and Artist) User Comment" ["show", "hide", "soft-hide"]
 @var select pinnedComment "Pinned Comment" ["show", "hide", "soft-hide"]
 @var select voiceComment "Voice Comment" ["show", "hide", "soft-hide"]
+@var select shortsComment "Shorts Comment" ["show", "hide", "soft-hide"]
 @var select upsellEmoji "Members Only Emoji" ["show", "hide", "soft-hide"]
 @var select superChat "Super Chat" ["show", "hide", "soft-hide"]
 @var select membersChat "Members Chat" ["show", "hide", "soft-hide"]
@@ -27,6 +28,7 @@
 @var select aiSummary "AI Summary" ["show", "hide", "soft-hide", "replace"]
 @var select clarifyBox "Info Box Underneath Video" ["show", "hide", "soft-hide", "replace"]
 @var select chatInfoBox "Live Chat Notice Box" ["show", "hide", "soft-hide", "replace"]
+@var select teaserCarousel "Whatever The Fuck Is Beside Description" ["show", "hide", "soft-hide", "smaller"]
 @var select joinButton "Join Button" ["show", "hide", "soft-hide"]
 @var select superThanksButton "Super Thanks Button" ["show", "hide", "soft-hide"]
 @var select superChatButton "Super Chat Button" ["show", "hide", "soft-hide"]
@@ -185,53 +187,88 @@
         .hide(@voiceComment);
     }
 
+    /* More bullshit comment "feature" (instead of simple image/gif) 🙄
+     * https://www.reddit.com/r/youtube/comments/1oz1ume/i_found_a_way_to_reply_with_images_in_youtube/
+     *
+     * Might be not too accurate, but:
+     * 1. You typically can't put links into comment/reply.
+     * 2. It's the only child, fingers crossed nobody post only one link to shorts and some text.
+     *
+     * And no, you can't select text node:
+     * - https://stackoverflow.com/questions/28855070/css-select-element-without-text-inside
+     * - https://stackoverflow.com/questions/5688712/is-there-a-css-selector-for-text-nodes
+    **/
+    yt-attributed-string.ytd-comment-view-model#content-text > span.yt-core-attributed-string > span:only-child > a[href ^= "/shorts/"] {
+        .comment(@shortsComment);
+    }
+
     /* Motherfucking LINE sticker clone from Tokopedia (╯‵□′)╯︵┻━┻ */
     yt-emoji-picker-upsell-category-renderer.yt-emoji-picker-renderer {
         .hide(@upsellEmoji);
     }
 
-    /* Your supachatto is useless here 😈 */
-    yt-live-chat-paid-message-renderer.yt-live-chat-item-list-renderer {
-        .hide(@superChat);
-    }
-
     /* Live chat */
-    yt-live-chat-text-message-renderer.yt-live-chat-item-list-renderer {
-        /* Fuck your membership in particular */
-        &:has(yt-live-chat-author-badge-renderer[type = "member"]) {
+    .yt-live-chat-item-list-renderer {
+        /* Your supachatto is useless here 😈 */
+        yt-live-chat-paid-message-renderer& {
+            .hide(@superChat);
+        }
+
+        /* A new memberslave has joined the cult 🧛‍♂️ */
+        yt-live-chat-membership-item-renderer& {
             .hide(@membersChat);
         }
 
-        /* Moderator? More like instigator amirite */
-        &:has(yt-live-chat-author-badge-renderer[aria-label = "Moderator"]) {
-            .hide(@moderatorChat);
-        }
-    }
+        /* Live chat item */
+        yt-live-chat-text-message-renderer& {
+            /* Fuck your membership in particular */
+            &:has(yt-live-chat-author-badge-renderer[type = "member"]) {
+                .hide(@membersChat);
+            }
 
-    /* Youtube chat is some of the most retarded alive */
-    yt-live-chat-viewer-engagement-message-renderer.yt-live-chat-item-list-renderer {
-        /* Hideous replacement here */
-        .handle(replace) {
-            &:not(:hover) {
-                #message-container {
-                    .replace(after,
-                    "Youtube wants to fuck over your right to troll! Do crime, be gay, fuck \22 community\22  guidelines 😎. (Hover over to \22restore\22  to original)");
-                }
-
-                #action-button > yt-button-renderer.yt-live-chat-viewer-engagement-message-renderer {
-                    .hide(soft-hide);
-                }
+            /* Moderator? More like instigator amirite */
+            &:has(yt-live-chat-author-badge-renderer[aria-label = "Moderator"]) {
+                .hide(@moderatorChat);
             }
         }
 
-        .handle(@v) {
-            .hide(@v);
-        }
+        /* Youtube chat is some of the most retarded alive */
+        yt-live-chat-viewer-engagement-message-renderer& {
+            /* Hideous replacement here */
+            .handle(replace) {
+                &:not(:hover) {
+                    #message-container {
+                        .replace(after,
+                        "Youtube wants to fuck over your right to troll! Do crime, be gay, fuck \22 community\22  guidelines 😎. (Hover over to \22restore\22  to original)");
+                    }
 
-        .handle(@chatInfoBox);
+                    #action-button > yt-button-renderer.yt-live-chat-viewer-engagement-message-renderer {
+                        .hide(soft-hide);
+                    }
+                }
+            }
+
+            .handle(@v) {
+                .hide(@v);
+            }
+
+            .handle(@chatInfoBox);
+        }
     }
 
-    /* Super chat (pending) */
+    /* Thingy above live chat */
+    .yt-live-chat-ticker-renderer {
+        /* Ain't gonna brag about membership */
+        yt-live-chat-ticker-sponsor-item-renderer& {
+            .hide(@membersChat);
+        }
+
+        /* Shush your superchat */
+        yt-live-chat-ticker-paid-message-item-renderer& {
+            .hide(@superChat);
+        }
+    }
+
     /* Artificial Idiot box is back in style 😎 */
     ytd-expandable-metadata-renderer.ytd-watch-flexy:has(video-summary-content-view-model) {
         /* Hideous replacement here */
@@ -272,32 +309,30 @@
         .handle(@aiSummary);
     }
 
-    /* Dumb & indoctrinated by big tech */
-    #teaser-carousel.ytd-watch-metadata:has(yt-carousel-item-view-model[aria-label = "Ask & learn"]) {
+    /* Dumb & indoctrinated by big tech 🤖 */
+    #teaser-carousel.ytd-watch-metadata:has(yt-carousel-item-view-model:is([aria-label = "Ask & learn"], [aria-label = "Ask"])) {
         /* Hideous replacement here */
         .handle(replace) {
             &:not(:hover) {
                 yt-carousel-title-view-model > div {
-                    font-size: 1.4rem;
-                    line-height: 2rem;
-                    font-weight: 500;
+                    &:first-child {
+                        font-size: 1.4rem;
+                        line-height: 2rem;
+                        font-weight: 500;
 
-                    .replace(after, "Dumb & Indoctrinate");
+                        .replace(after, "Dumb & Indoctrinate");
+                    }
+
+                    &.ytCarouselTitleViewModelNavigation {
+                        display: none;
+                    }
                 }
 
                 yt-text-carousel-item-view-model {
-                    > span.yt-core-attributed-string {
-                        font-size: calc(1.4rem * 0.8);
-                        line-height: calc(2rem * 0.8);
-                        max-height: 6rem;
-                        -webkit-line-clamp: unset;
+                    font-size: calc(1.4rem * 0.6);
+                    line-height: calc(2rem * 0.6);
 
-                        .replace(after, "Ministry of truth wants you to submit to AI overlords. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text 😁. (Hover over to \22restore\22  to original)");
-                    }
-
-                    > button-view-model {
-                        display: none;
-                    }
+                    .replace(before, "Ministry of truth wants you to submit to AI overlords. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text 😁. (Hover over to \22restore\22  to original)");
                 }
             }
         }
@@ -343,6 +378,22 @@
         }
 
         .handle(@clarifyBox);
+    }
+
+    /* Thanks for taking half the description box 😑 */
+    #teaser-carousel.ytd-watch-metadata {
+        .handle(smaller) {
+            min-width: 0px;
+            flex-basis: calc(100%/3);
+            flex-grow: 0;
+            flex-shrink: 1;
+        }
+
+        .handle(@v) {
+            .hide(@v);
+        }
+
+        .handle(@teaserCarousel);
     }
 
     /* Fuck membership x💯 */
