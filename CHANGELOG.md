@@ -3,6 +3,18 @@
 
 ## Hide Youtube BS
 
+### v1.7.0
+
+#### Additions
+
+- Add live ideo.
+- Add music video.
+- Add search list video filtering. Still needs to reimplement existing filters.
+
+#### Changes
+
+- Change selectors for comments and live chat.
+
 ### v1.6.0
 
 #### Additions

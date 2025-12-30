@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.6.0
+@version 1.7.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -14,6 +14,8 @@
 @var select autoDubVideo "Auto Dubbed Video" ["show", "hide", "soft-hide"]
 @var select verifiedVideo "Verified Video" ["show", "hide", "soft-hide"]
 @var select collabVideo "Collab Video (might not be perfect)" ["show", "hide", "soft-hide"]
+@var select liveVideo "Live Video" ["show", "hide", "soft-hide"]
+@var select musicVideo "Music Video" ["show", "hide", "soft-hide"]
 @var select superThanksComment "Super Thanks Comment" ["show", "hide", "soft-hide"]
 @var select membersComment "Members Comment" ["show", "hide", "soft-hide"]
 @var select heartComment "Hearted Comment" ["show", "hide", "soft-hide"]
@@ -25,6 +27,7 @@
 @var select superChat "Super Chat" ["show", "hide", "soft-hide"]
 @var select membersChat "Members Chat" ["show", "hide", "soft-hide"]
 @var select moderatorChat "Moderator Chat" ["show", "hide", "soft-hide"]
+@var select ownerChat "Channel Owner Chat" ["show", "hide", "soft-hide"]
 @var select aiSummary "AI Summary" ["show", "hide", "soft-hide", "replace"]
 @var select clarifyBox "Info Box Underneath Video" ["show", "hide", "soft-hide", "replace"]
 @var select chatInfoBox "Live Chat Notice Box" ["show", "hide", "soft-hide", "replace"]
@@ -99,6 +102,21 @@
         &:has(yt-content-metadata-view-model > div:first-child svg) {
             .hide(@verifiedVideo);
         }
+
+        /* Jazz music stops (yup, another d selector yay 🎉) */
+        &:has(badge-shape.yt-badge-shape--thumbnail-default > .yt-badge-shape__icon svg > path[d = "M5.5 1.383V6.88a2.25 2.25 0 101 1.871V4.6l2.743 1.647a.5.5 0 00.757-.43V3.485a.5.5 0 00-.243-.429l-3.5-2.1a.5.5 0 00-.757.427Z"]) {
+            .hide(@musicVideo);
+        }
+
+        /* Unalive yourself (fuck youtube for inconsistenly removing aria-label) */
+        &:has(badge-shape.yt-badge-shape--thumbnail-live > .yt-badge-shape__icon svg > path[d = "M4.222 4.223a11 11 0 000 15.555 1 1 0 101.414-1.414 9 9 0 010-12.727 1 1 0 10-1.414-1.414Zm13.79.353a1 1 0 000 1.414 8.5 8.5 0 010 12.022 1 1 0 001.413 1.414 10.501 10.501 0 000-14.85 1 1 0 00-1.413 0Zm-2.83 2.827a1 1 0 000 1.414 4.501 4.501 0 010 6.365 1.001 1.001 0 001.414 1.414 6.5 6.5 0 000-9.193 1 1 0 00-1.415 0Zm-7.78 0a6.5 6.5 0 000 9.194 1 1 0 001.415-1.415 4.5 4.5 0 010-6.364 1.001 1.001 0 00-1.415-1.415ZM12 10a2 2 0 100 4 2 2 0 000-4Z"]) {
+            .hide(@liveVideo);
+        }
+
+        /* Collab? More like shitting all over my feed 🤬 */
+        &:has(yt-avatar-stack-view-model) {
+            .hide(@collabVideo);
+        }
     }
 
     /* Recommended video */
@@ -110,13 +128,28 @@
         }
 
         /* Fuck AI dubbing (i don't like d attribute selector but ehhhhhhhhhhh) */
-        &:has(badge-shape.yt-badge-shape--default > .yt-badge-shape__icon svg [d = "M19.4.2a1 1 0 00-.2 1.4 9 9 0 01-.022 10.83 1 1 0 001.595 1.206A11 11 0 0020.8.4a1 1 0 00-1.4-.2ZM10 2a5 5 0 100 10 5 5 0 000-10Zm6.17.3a1 1 0 00-.028 1.414c.895.932 1.365 2.114 1.358 3.312-.006 1.199-.49 2.378-1.396 3.302a1.001 1.001 0 101.427 1.4c1.257-1.281 1.959-2.953 1.969-4.69.009-1.738-.673-3.416-1.916-4.71A1 1 0 0016.17 2.3ZM10 13a8 8 0 00-8 8 1 1 0 001 1h14l.102-.005A1 1 0 0018 21a8 8 0 00-8-8Z"]) {
+        &:has(badge-shape.yt-badge-shape--default > .yt-badge-shape__icon svg > path[d = "M19.4.2a1 1 0 00-.2 1.4 9 9 0 01-.022 10.83 1 1 0 001.595 1.206A11 11 0 0020.8.4a1 1 0 00-1.4-.2ZM10 2a5 5 0 100 10 5 5 0 000-10Zm6.17.3a1 1 0 00-.028 1.414c.895.932 1.365 2.114 1.358 3.312-.006 1.199-.49 2.378-1.396 3.302a1.001 1.001 0 101.427 1.4c1.257-1.281 1.959-2.953 1.969-4.69.009-1.738-.673-3.416-1.916-4.71A1 1 0 0016.17 2.3ZM10 13a8 8 0 00-8 8 1 1 0 001 1h14l.102-.005A1 1 0 0018 21a8 8 0 00-8-8Z"]) {
             .hide(@autoDubVideo);
         }
 
         /* Unverify raygun 🔫 */
         &:has(yt-content-metadata-view-model > div:first-child svg) {
             .hide(@verifiedVideo);
+        }
+
+        /* Jazz music stops (yup, another d selector yay 🎉) */
+        &:has(badge-shape.yt-badge-shape--thumbnail-default > .yt-badge-shape__icon svg > path[d = "M5.5 1.383V6.88a2.25 2.25 0 101 1.871V4.6l2.743 1.647a.5.5 0 00.757-.43V3.485a.5.5 0 00-.243-.429l-3.5-2.1a.5.5 0 00-.757.427Z"]) {
+            .hide(@musicVideo);
+        }
+
+        /* Unalive yourself (fuck youtube for inconsistenly removing aria-label) */
+        &:has(badge-shape.yt-badge-shape--thumbnail-live > .yt-badge-shape__icon svg > path[d = "M4.222 4.223a11 11 0 000 15.555 1 1 0 101.414-1.414 9 9 0 010-12.727 1 1 0 10-1.414-1.414Zm13.79.353a1 1 0 000 1.414 8.5 8.5 0 010 12.022 1 1 0 001.413 1.414 10.501 10.501 0 000-14.85 1 1 0 00-1.413 0Zm-2.83 2.827a1 1 0 000 1.414 4.501 4.501 0 010 6.365 1.001 1.001 0 001.414 1.414 6.5 6.5 0 000-9.193 1 1 0 00-1.415 0Zm-7.78 0a6.5 6.5 0 000 9.194 1 1 0 001.415-1.415 4.5 4.5 0 010-6.364 1.001 1.001 0 00-1.415-1.415ZM12 10a2 2 0 100 4 2 2 0 000-4Z"]) {
+            .hide(@liveVideo);
+        }
+
+        /* Collab? More like shitting all over my feed 🤬 */
+        &:has(yt-avatar-stack-view-model) {
+            .hide(@collabVideo);
         }
     }
 
@@ -138,53 +171,61 @@
         }
     }
 
-    /* Collab? More like shitting all over my feed 🤬 */
-    ytd-rich-item-renderer.ytd-rich-grid-renderer,
-    yt-lockup-view-model.ytd-item-section-renderer {
+    /* Search result video */
+    ytd-video-renderer.ytd-item-section-renderer {
+        /* Collab? More like shitting all over my feed 🤬 */
         &:has(yt-avatar-stack-view-model) {
             .hide(@collabVideo);
         }
     }
 
     /* Template for comment */
-    .comment(@v) {
+    .comment(has, @v) {
         /* Entire comment thread */
-        ytd-comment-thread-renderer.ytd-item-section-renderer:has(> #comment-container &),
+        ytd-comment-thread-renderer.ytd-item-section-renderer:has(> #comment-container > ytd-comment-view-model &),
         /* Comment reply */
         ytd-comment-view-model.ytd-comment-replies-renderer:has(&) {
             .hide(@v);
         }
     }
 
+    .comment(is, @v) {
+        /* Entire comment thread */
+        ytd-comment-thread-renderer.ytd-item-section-renderer:has(> #comment-container > ytd-comment-view-model&),
+        /* Comment reply */
+        ytd-comment-view-model.ytd-comment-replies-renderer& {
+            .hide(@v);
+        }
+    }
+
     /* Fuck super thanks */
-    yt-pdg-comment-chip-renderer:not([hidden]) {
-        .comment(@superThanksComment);
+    yt-pdg-comment-chip-renderer.ytd-comment-view-model#paid-comment-chip:not([hidden]) {
+        .comment(has, @superThanksComment);
     }
 
     /* Members gets findommed */
-    ytd-sponsor-comment-badge-renderer {
-        .comment(@membersComment);
+    [has-sponsor-badge] {
+        .comment(is, @membersComment);
     }
 
     /* Fuck preferential treatment */
-    ytd-creator-heart-renderer:not(:empty) {
-        .comment(@heartComment);
+    ytd-comment-engagement-bar.ytd-comment-view-model#action-buttons > #toolbar > #creator-heart:not(:empty) {
+        .comment(has, @heartComment);
     }
 
     /* Verify my ass */
-    ytd-author-comment-badge-renderer {
-        .comment(@verifiedComment);
+    [has-author-badge] {
+        .comment(is, @verifiedComment);
     }
 
     /* Pin::into_inner_unchecked */
-    ytd-pinned-comment-badge-renderer {
-        .comment(@pinnedComment);
+    [pinned] {
+        .comment(is, @pinnedComment);
     }
 
     /* Fucking hate those mobile-only "feature" */
-    ytd-comment-view-model:is(.ytd-comment-thread-renderer,
-    .ytd-comment-replies-renderer)[has-voice-reply] {
-        .hide(@voiceComment);
+    [has-voice-reply] {
+        .comment(is, @voiceComment);
     }
 
     /* More bullshit comment "feature" (instead of simple image/gif) 🙄
@@ -199,7 +240,7 @@
      * - https://stackoverflow.com/questions/5688712/is-there-a-css-selector-for-text-nodes
     **/
     yt-attributed-string.ytd-comment-view-model#content-text > span.yt-core-attributed-string > span:only-child > a[href ^= "/shorts/"] {
-        .comment(@shortsComment);
+        .comment(has, @shortsComment);
     }
 
     /* Motherfucking LINE sticker clone from Tokopedia (╯‵□′)╯︵┻━┻ */
@@ -222,13 +263,18 @@
         /* Live chat item */
         yt-live-chat-text-message-renderer& {
             /* Fuck your membership in particular */
-            &:has(yt-live-chat-author-badge-renderer[type = "member"]) {
+            &[author-type = "member"] {
                 .hide(@membersChat);
             }
 
             /* Moderator? More like instigator amirite */
-            &:has(yt-live-chat-author-badge-renderer[aria-label = "Moderator"]) {
+            &[author-type = "moderator"] {
                 .hide(@moderatorChat);
+            }
+
+            /* g8 pwnd m8 😎 */
+            &[author-type = "owner"] {
+                .hide(@ownerChat);
             }
         }
 
@@ -437,7 +483,7 @@
     }
 
     /* No thanks and you're not super 🦸‍♂️🤚 */
-    #picker-buttons.yt-live-chat-message-input-renderer:not([hidden]) {
+    yt-live-chat-app #picker-buttons > #product-picker:not([hidden]) {
         .hide(@superChatButton);
     }
 
