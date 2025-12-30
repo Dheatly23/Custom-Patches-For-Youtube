@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.6
+@version        0.0.7
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -165,8 +165,14 @@
     /* Comments */
     ytd-comments > ytd-item-section-renderer > #contents {
         /* No skeleton in my backyard */
-        > ytd-continuation-item-renderer > #ghost-comment-section {
-            display: none;
+        ytd-continuation-item-renderer {
+            > #ghost-comment-section {
+                display: none;
+            }
+
+            > tp-yt-paper-spinner {
+                margin: 0px;
+            }
         }
     }
 
@@ -250,6 +256,12 @@
         --yt-frosted-glass-backdrop-filter-override: none;
     }
 
+    /* Unblur tophead */
+    ytd-masthead:not([frosted-glass-mode = "none"]) > #background.ytd-masthead {
+        background: var(--yt-spec-base-background) !important;
+        backdrop-filter: unset !important;
+    }
+
     /* Buttons in recommended video */
     yt-thumbnail-hover-overlay-toggle-actions-view-model button {
         /* Fix corner */
@@ -261,5 +273,21 @@
     /* Tiny pp energy 🤏🍆 */
     :is(yt-lockup-view-model.ytd-item-section-renderer, ytd-rich-item-renderer.ytd-rich-grid-renderer):not(:hover) a[href *= "&pp="] > yt-thumbnail-view-model img {
         filter: grayscale(100%) blur(2px);
+    }
+
+    /* Patch for Youtube Tiny Generals */
+    ytd-guide-collapsible-section-entry-renderer.ytd-guide-section-renderer > #header:has(> #header-entry > a[href = "/feed/subscriptions"]) {
+        display: flex !important;
+    }
+
+    /* Patch margins for comment thread */
+    yt-sub-thread {
+        > .ytSubThreadSubThreadContent {
+            margin-top: 0px;
+        }
+
+        &.ytSubThreadHost > .ytSubThreadThreadline > .ytSubThreadConnection {
+            height: 15px;
+        }
     }
 }
