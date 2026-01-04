@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.7.0
+@version 1.7.1
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -120,7 +120,7 @@
     }
 
     /* Recommended video */
-    yt-lockup-view-model.ytd-item-section-renderer {
+    yt-lockup-view-model:is(.ytd-item-section-renderer, .ytd-watch-next-secondary-results-renderer) {
         /* Haven't seen any members-only video got recommended yet (thank goodness 😇) */
         /* Begone beggars (this might be not too accurate selector) */
         &:has(badge-shape.yt-badge-shape--commerce) {
@@ -154,7 +154,7 @@
     }
 
     /* Probably remnant of an old UI? Only seen it for shorts */
-    ytd-compact-video-renderer.ytd-item-section-renderer {
+    ytd-compact-video-renderer:is(.ytd-item-section-renderer, .ytd-watch-next-secondary-results-renderer) {
         /* Begone beggars (ARIA label is only predicted lmao) */
         &:has(ytd-badge-supported-renderer.ytd-compact-video-renderer > div > badge-shape[aria-label = "Fundraiser"]) {
             .hide(@fundraiserVideo);
@@ -316,7 +316,7 @@
     }
 
     /* Artificial Idiot box is back in style 😎 */
-    ytd-expandable-metadata-renderer.ytd-watch-flexy:has(video-summary-content-view-model) {
+    ytd-expandable-metadata-renderer:is(.ytd-watch-flexy, .ytd-structured-description-content-renderer):has(> #content > video-summary-content-view-model) {
         /* Hideous replacement here */
         .handle(replace) {
             &:not(:hover) {

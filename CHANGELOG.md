@@ -3,6 +3,13 @@
 
 ## Hide Youtube BS
 
+### v1.7.1
+
+#### Fixes
+
+- Fix some shennanigans with recommended video.
+- Fix AI summary tucked away in video description.
+
 ### v1.7.0
 
 #### Additions
