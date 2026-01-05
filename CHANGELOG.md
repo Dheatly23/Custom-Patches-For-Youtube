@@ -3,6 +3,12 @@
 
 ## Hide Youtube BS
 
+### v1.7.2
+
+#### Fixes
+
+- Fix nested comment thread not selected.
+
 ### v1.7.1
 
 #### Fixes
