@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.7
+@version        0.0.8
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -59,12 +59,19 @@
         img.yt-spec-avatar-shape__image {
             border-radius: profileRadius;
         }
+
+        /* Patch image mask for collab BS */
+        div {
+            mask-image: unset !important;
+        }
     }
 
     :is(/* Fix channel banner */
     yt-image-banner-view-model,
     /* Fix video thumbnail */
-    yt-thumbnail-view-model) {
+    yt-thumbnail-view-model,
+    /* Fix shorts thumbnail */
+    ytm-shorts-lockup-view-model > a > div.shortsLockupViewModelHostThumbnailParentContainerRounded) {
         border-radius: borderRadius !important;
     }
 
@@ -271,7 +278,7 @@
     }
 
     /* Tiny pp energy 🤏🍆 */
-    :is(yt-lockup-view-model.ytd-item-section-renderer, ytd-rich-item-renderer.ytd-rich-grid-renderer):not(:hover) a[href *= "&pp="] > yt-thumbnail-view-model img {
+    :is(yt-lockup-view-model.ytd-item-section-renderer, yt-lockup-view-model.ytd-watch-next-secondary-results-renderer, ytd-rich-item-renderer.ytd-rich-grid-renderer):not(:hover) a[href *= "&pp="] > yt-thumbnail-view-model img {
         filter: grayscale(100%) blur(2px);
     }
 
@@ -280,14 +287,33 @@
         display: flex !important;
     }
 
-    /* Patch margins for comment thread */
-    yt-sub-thread {
-        > .ytSubThreadSubThreadContent {
-            margin-top: 0px;
-        }
+    /* Patch margins and compactify comment thread */
+    @css {
+        yt-sub-thread {
+            > .ytSubThreadSubThreadContent {
+                margin-top: 0px;
+                margin-left: 5px;
+            }
 
-        &.ytSubThreadHost > .ytSubThreadThreadline > .ytSubThreadConnection {
-            height: 15px;
+            &.ytSubThreadHost {
+                &:not(.ytSubThreadHasButton):not(:only-of-type) > .ytSubThreadThreadline {
+                    width: 15px;
+
+                    > .ytSubThreadConnection {
+                        border-bottom-left-radius: 7.5px;
+                    }
+                }
+
+                > .ytSubThreadThreadline > .ytSubThreadConnection {
+                    width: calc(100% - 7.5px);
+                    height: 15px;
+                    border-bottom-left-radius: 15px;
+                }
+            }
         }
+    }
+
+    ytd-comment-view-model > div#body > div#author-thumbnail > div.threadline {
+        width: 15px;
     }
 }
