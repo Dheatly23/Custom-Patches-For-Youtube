@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.9
+@version        0.0.10
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -311,6 +311,10 @@
                 }
             }
         }
+    }
+
+    ytd-comment-thread-renderer > div.ytd-comment-thread-renderer.thread-hitbox {
+        width: 15px !important;
     }
 
     ytd-comment-view-model > div#body > div#author-thumbnail > div.threadline {
