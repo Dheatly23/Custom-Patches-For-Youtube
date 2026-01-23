@@ -3,6 +3,21 @@
 
 ## Hide Youtube BS
 
+### v1.8.0
+
+#### Additions
+
+- Add thumbnail in search autocomplete.
+- Add community button.
+- Add leaderboard button.
+- Add leaderboard badge.
+- Add ask button in description.
+- Add chat summary.
+
+#### Fixes
+
+- Fix join button in watch page not selected.
+
 ### v1.7.2
 
 #### Fixes

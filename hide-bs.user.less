@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.7.2
+@version 1.8.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -32,6 +32,7 @@
 @var select clarifyBox "Info Box Underneath Video" ["show", "hide", "soft-hide", "replace"]
 @var select chatInfoBox "Live Chat Notice Box" ["show", "hide", "soft-hide", "replace"]
 @var select teaserCarousel "Whatever The Fuck Is Beside Description" ["show", "hide", "soft-hide", "smaller"]
+@var select searchThumbnail "Search Suggestion Thumbnail" ["show", "hide", "soft-hide"]
 @var select joinButton "Join Button" ["show", "hide", "soft-hide"]
 @var select superThanksButton "Super Thanks Button" ["show", "hide", "soft-hide"]
 @var select superChatButton "Super Chat Button" ["show", "hide", "soft-hide"]
@@ -42,6 +43,9 @@
 @var select createButton "Create Button" ["show", "hide", "soft-hide"]
 @var select mikeSearchButton "Mike Button Beside Search Box" ["show", "hide", "soft-hide"]
 @var select aiButton "AI Button" ["show", "hide", "soft-hide"]
+@var select communityButton "Community Button" ["show", "hide", "soft-hide"]
+@var select leaderboardButton "Leaderboard Button" ["show", "hide", "soft-hide"]
+@var select leaderboardBadge "Leaderboard Badge" ["show", "hide", "soft-hide"]
 ==/UserStyle== */
 
 @-moz-document domain("youtube.com") {
@@ -300,6 +304,20 @@
 
             .handle(@chatInfoBox);
         }
+
+        /* Chat, jerk it a little */
+        yt-live-chat-banner-manager&:has(yt-live-chat-banner-chat-summary-renderer) {
+            /* Yet to do replacement, so yeah... */
+            .handle(replace) {
+                .hide(soft-hide);
+            }
+
+            .handle(@v) {
+                .hide(@v);
+            }
+
+            .handle(@aiSummary);
+        }
     }
 
     /* Thingy above live chat */
@@ -313,6 +331,11 @@
         yt-live-chat-ticker-paid-message-item-renderer& {
             .hide(@superChat);
         }
+    }
+
+    /* Badge of simp */
+    yt-button-view-model.yt-live-chat-text-message-renderer:has(> button-view-model > button[aria-label ^= "#"]) {
+        .hide(@leaderboardBadge);
     }
 
     /* Artificial Idiot box is back in style 😎 */
@@ -442,8 +465,14 @@
         .handle(@teaserCarousel);
     }
 
+    /* Search thumbnail might be the most useless idea ever */
+    yt-searchbox > .ytSearchboxComponentSuggestionsContainer > .ytSuggestionComponentSuggestion > .ytSuggestionComponentRightContainer > .ytSuggestionComponentThumbnailContainer {
+        .hide(@searchThumbnail);
+    }
+
     /* Fuck membership x💯 */
-    :is(yt-flexible-actions-view-model, ytd-video-owner-renderer.ytd-watch-metadata) > :has(button[aria-label = "Join this channel"]) {
+    yt-flexible-actions-view-model > div:has(> button-view-model > button[aria-label = "Join this channel"]),
+    ytd-video-owner-renderer.ytd-watch-metadata > div#sponsor-button {
         .hide(@joinButton) !important;
     }
 
@@ -503,5 +532,20 @@
         &:has(> yt-button-shape > button[aria-label = "Search with your voice"]) {
             .hide(@mikeSearchButton);
         }
+    }
+
+    /* More AI bullshit (seriously guys, just watch the fucking video) */
+    ytd-structured-description-content-renderer > #items > yt-video-description-youchat-section-view-model {
+        .hide(@aiButton);
+    }
+
+    /* Reinventing facebook wall, eh? */
+    yt-flexible-actions-view-model > div:has(> button-view-model > a[aria-label = "Visit Community"]) {
+        .hide(@communityButton);
+    }
+
+    /* Loserboard and simpboard */
+    yt-live-chat-header-renderer.yt-live-chat-renderer > div > ytvl-live-viewer-leaderboard-chat-entry-point-view-model {
+        .hide(@leaderboardButton);
     }
 }

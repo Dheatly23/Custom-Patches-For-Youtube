@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.10
+@version        0.0.11
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -19,16 +19,16 @@
     /* Fix margins */
     ytd-rich-item-renderer:is(.ytd-rich-grid-renderer, .ytd-rich-shelf-renderer) {
         margin-left: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
-        margin-right: calc(var(--ytd-rich-grid-item-margin) / 2);
-        margin-bottom: calc(var(--ytd-rich-grid-item-margin) / 2);
+        margin-right: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
+        margin-bottom: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
     }
 
-    ytd-rich-item-renderer.ytd-rich-grid-renderer:not([is-shelf-item]) {
-        width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) * 2 - 0.01px);
+    ytd-rich-item-renderer.ytd-rich-grid-renderer {
+        width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) - 0.01px) !important;
     }
 
     ytd-rich-item-renderer.ytd-rich-shelf-renderer[is-shelf-item] {
-        width: calc(100% / var(--ytd-rich-grid-slim-items-per-row) - var(--ytd-rich-grid-item-margin) * 2 - 0.01px);
+        width: calc(100% / var(--ytd-rich-grid-slim-items-per-row) - var(--ytd-rich-grid-item-margin) - 0.01px) !important;
         /* Patch shorts */
         &:not([hidden]) {
             display: block !important;
@@ -37,13 +37,58 @@
 
     [page-subtype = "channels"],
     [page-subtype = "subscriptions"] :is(ytd-rich-grid-renderer, ytd-rich-shelf-renderer) {
-        --ytd-rich-grid-item-margin: 4px !important;
-        --ytd-rich-grid-row-margin: 4px !important;
+        --ytd-rich-grid-item-margin: 2px !important;
+        --ytd-rich-grid-row-margin: 2px !important;
     }
 
     /* Community post full width */
     [page-subtype = "channels"] ytd-section-list-renderer > #contents > :is(ytd-backstage-items, ytd-comments) {
         max-width: 100%;
+    }
+
+    /* Channel video full width */
+    [page-subtype = "channels"] ytd-two-column-browse-results-renderer.ytd-browse {
+        max-width: unset;
+        width: 100% !important;
+
+        > #primary {
+            padding-inline: 0px !important;
+        }
+    }
+
+    /* Subscription box full width */
+    [page-subtype = "subscriptions"] ytd-two-column-browse-results-renderer.ytd-browse.grid {
+        width: 100% !important;
+    }
+
+    /* Small buttons for recommended videos */
+    yt-lockup-metadata-view-model {
+        > .yt-lockup-metadata-view-model__text-container > h3 > a {
+            padding-right: 16px;
+        }
+
+        > .yt-lockup-metadata-view-model__menu-button {
+            right: 0px;
+
+            > button-view-model > button[aria-label = "More actions"] {
+                width: 16px;
+            }
+        }
+    }
+
+    /* Small buttons for shorts */
+    ytm-shorts-lockup-view-model {
+        > .shortsLockupViewModelHostOutsideMetadata {
+            padding-top: 0.2rem;
+        }
+
+        > .shortsLockupViewModelHostOutsideMetadataHasMenu {
+            padding-right: 16px;
+
+            > .shortsLockupViewModelHostOutsideMetadataMenu > button {
+                width: 16px;
+            }
+        }
     }
 
     /* Reduce padding on about
@@ -66,12 +111,14 @@
         }
     }
 
-    :is(/* Fix channel banner */
+    /* Fix shorts thumbnail */
+    ytm-shorts-lockup-view-model > a > div.shortsLockupViewModelHostThumbnailParentContainerRounded,
+    /* Fix channel banner */
     yt-image-banner-view-model,
     /* Fix video thumbnail */
     yt-thumbnail-view-model,
-    /* Fix shorts thumbnail */
-    ytm-shorts-lockup-view-model > a > div.shortsLockupViewModelHostThumbnailParentContainerRounded) {
+    /* Pinned live chat message */
+    yt-live-chat-banner-renderer {
         border-radius: borderRadius !important;
     }
 
@@ -86,7 +133,11 @@
     }
 
     /* Fix border for extra stuff in description */
-    .ytVideoMetadataCarouselViewModelHost {
+    .ytVideoMetadataCarouselViewModelHost,
+    /* Emoji search box */
+    yt-emoji-picker-renderer > #search-panel.yt-emoji-picker-renderer,
+    /* Chat input box */
+    yt-live-chat-message-input-renderer.yt-live-chat-renderer > #container > #top > #input-container {
         border-radius: borderRadius;
     }
 
@@ -109,101 +160,146 @@
             }
         }
 
-        #below {
-            /* Fix border of "clarify box" */
-            > #clarify-box > ytd-info-panel-container-renderer {
-                ytd-info-panel-content-renderer {
-                    border-bottom-left-radius: borderRadius;
-                    border-bottom-right-radius: borderRadius;
+        > #columns {
+            > #primary > #primary-inner > #below {
+                /* Fix border of "clarify box" */
+                > #clarify-box > ytd-info-panel-container-renderer {
+                    ytd-info-panel-content-renderer {
+                        border-bottom-left-radius: borderRadius;
+                        border-bottom-right-radius: borderRadius;
+                    }
+                }
+
+                /* Replace another bullshit box */
+                > ytd-watch-metadata ytd-info-panel-content-renderer {
+                    border-radius: borderRadius;
+
+                    &:not(:hover) {
+                        yt-icon.inline-icon,
+                        #menu {
+                            display: none;
+                        }
+
+                        div.paragraphs.ytd-info-panel-content-renderer {
+                            > div.style-scope.ytd-info-panel-content-renderer > yt-formatted-string {
+                                &::before {
+                                    /* Some hideous replacement here */
+                                    content: "Youtube Verifies☑ that \22";
+                                }
+
+                                &::after {
+                                    /* Some hideous replacement here */
+                                    content: "\22  (total lies 🙄)";
+                                }
+                            }
+
+                            > div.ytd-info-panel-content-renderer.disclaimer-container,
+                            > div.style-scope.ytd-info-panel-content-renderer > div.inline-source:not([hidden]) {
+                                > * {
+                                    display: none;
+                                }
+
+                                &::after {
+                                    /* Some hideous replacement here */
+                                    content: "Youtube wants to fuck your mind and rewrite freedom to think. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text. 🤣 (Hover over to \22restore\22  to original)";
+                                    color: var(--yt-spec-text-primary);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                /* More marie kondo */
+                > :is(#ticket-shelf, #shopping-timely-shelf) {
+                    display: none;
                 }
             }
 
-            /* Replace another bullshit box */
-            > ytd-watch-metadata ytd-info-panel-content-renderer {
-                border-radius: borderRadius;
-
-                &:not(:hover) {
-                    yt-icon.inline-icon,
-                    #menu {
+            > #secondary {
+                ytd-item-section-renderer > #contents {
+                    /* Weird channel in related */
+                    > ytd-channel-renderer {
                         display: none;
                     }
 
-                    div.paragraphs.ytd-info-panel-content-renderer {
-                        > div.style-scope.ytd-info-panel-content-renderer > yt-formatted-string {
-                            &::before {
-                                /* Some hideous replacement here */
-                                content: "Youtube Verifies☑ that \22";
-                            }
-
-                            &::after {
-                                /* Some hideous replacement here */
-                                content: "\22  (total lies 🙄)";
-                            }
-                        }
-
-                        > div.ytd-info-panel-content-renderer.disclaimer-container,
-                        > div.style-scope.ytd-info-panel-content-renderer > div.inline-source:not([hidden]) {
-                            > * {
-                                display: none;
-                            }
-
-                            &::after {
-                                /* Some hideous replacement here */
-                                content: "Youtube wants to fuck your mind and rewrite freedom to think. With our infinite wisdom, we replaced this bullshit, useless box, that you won\'t ever read with our own text. 🤣 (Hover over to \22restore\22  to original)";
-                                color: var(--yt-spec-text-primary);
-                            }
-                        }
+                    /* Fix margins */
+                    > .ytd-item-section-renderer {
+                        margin-top: 0.2em;
                     }
                 }
             }
-
-            /* More marie kondo */
-            > :is(#ticket-shelf, #shopping-timely-shelf) {
-                display: none;
-            }
         }
 
-        /* Weird channel in related */
-        #related #contents > ytd-channel-renderer {
-            display: none;
+        &:not([fullscreen]) {
+            > #columns {
+                > #primary {
+                    /* Fix margins */
+                    /* margin-left: 0px; */
+                    padding-right: 0px;
+                    padding-top: 0.5rem;
+                }
+
+                > #secondary {
+                    /* Fix margins */
+                    padding-left: 0.75rem;
+                    padding-right: 0px;
+                    padding-top: 0.5rem;
+                    width: calc(var(--ytd-watch-flexy-sidebar-width) + 32px - 0.75rem);
+                }
+            }
         }
     }
 
     /* Comments */
-    ytd-comments > ytd-item-section-renderer > #contents {
-        /* No skeleton in my backyard */
-        ytd-continuation-item-renderer {
-            > #ghost-comment-section {
-                display: none;
+    ytd-comments > ytd-item-section-renderer {
+        /* Remove excessive margin for header */
+        > #header > ytd-comments-header-renderer {
+            margin-top: 0px;
+            margin-bottom: 1lh;
+
+            > #title {
+                margin-bottom: 1lh;
+            }
+        }
+
+        > #contents {
+            /* No skeleton in my backyard */
+            ytd-continuation-item-renderer {
+                > #ghost-comment-section {
+                    display: none;
+                }
+
+                > tp-yt-paper-spinner {
+                    margin: 0px;
+                }
             }
 
-            > tp-yt-paper-spinner {
-                margin: 0px;
+            /* Fix margin between items */
+            > ytd-comment-thread-renderer {
+                margin-bottom: 0px;
             }
         }
     }
 
+    /* Fix search box */
     yt-searchbox {
-        /* Fix search box */
-        > :is(.ytSearchboxComponentInputBox, .ytSearchboxComponentSearchButton, .ytSearchboxComponentSuggestionsContainer) {
+        margin-left: 0px;
+        margin-right: 0px;
+
+        :is(.ytSearchboxComponentInputBox, .ytSearchboxComponentSearchButton, .ytSearchboxComponentSuggestionsContainer, .ytSuggestionComponentRoundedSuggestion) {
             border-radius: borderRadius;
         }
 
-        /* Hide spoilery search thumbnail */
-        > .ytSearchboxComponentSuggestionsContainer > .ytSuggestionComponentSuggestion > .ytSuggestionComponentRightContainer:has(> .ytSuggestionComponentThumbnailContainer) {
-            display: none;
+        .ytSearchboxComponentSuggestionsContainer {
+            padding-top: 0px;
+            padding-bottom: 0px;
         }
-    }
 
-    yt-live-chat-app {
-        /* Hide useless AI "chat summary" */
-        yt-live-chat-banner-manager:has(yt-live-chat-banner-chat-summary-renderer),
-        /* Hide bs "leaderboard"
-           Might also remove badges.
-        */
-        yt-live-chat-header-renderer div:has(> ytvl-live-viewer-leaderboard-chat-entry-point-view-model),
-        yt-live-chat-item-list-renderer yt-live-chat-text-message-renderer > #content > yt-live-chat-author-chip + div.yt-live-chat-text-message-renderer:has(> yt-button-view-model) {
-            display: none;
+        .ytSuggestionComponentSuggestion {
+            margin-left: 0px;
+            margin-right: 0px;
+            padding-left: 8px;
+            padding-right: 8px;
         }
     }
 
@@ -241,6 +337,11 @@
     /* Disable touchy feedbacky ma */
     yt-lockup-view-model > div.yt-lockup-view-model > yt-touch-feedback-shape {
         display: none;
+    }
+
+    /* Reduce padding under the like/dislike button */
+    ytd-watch-metadata.ytd-watch-flexy > #above-the-fold > #top-row {
+        padding-bottom: 4px !important;
     }
 
     /* Video popup menu */
@@ -292,10 +393,34 @@
         yt-sub-thread {
             > .ytSubThreadSubThreadContent {
                 margin-top: 0px;
-                margin-left: 5px;
+                margin-left: 0.75rem;
+
+                > .show-replies-button {
+                    > #creator-thumbnail.ytd-comment-replies-renderer {
+                        margin-inline: 0.75rem;
+                    }
+
+                    > span.dot {
+                        margin: 0px;
+                    }
+                }
+
+                > .show-replies-button,
+                > ytd-continuation-item-renderer > #button,
+                & {
+                    > ytd-button-renderer > yt-button-shape > button {
+                        padding-inline: 0.75rem;
+                    }
+                }
             }
 
             &.ytSubThreadHost {
+                > .ytSubThreadThreadline > .ytSubThreadConnection {
+                    width: calc(100% - 7.5px);
+                    height: 15px;
+                    border-bottom-left-radius: 15px;
+                }
+
                 &:not(.ytSubThreadHasButton:only-of-type) > .ytSubThreadThreadline {
                     width: 15px;
 
@@ -303,21 +428,38 @@
                         border-bottom-left-radius: 7.5px;
                     }
                 }
+            }
+        }
 
-                > .ytSubThreadThreadline > .ytSubThreadConnection {
-                    width: calc(100% - 7.5px);
-                    height: 15px;
-                    border-bottom-left-radius: 15px;
-                }
+        ytd-comment-thread-renderer > div.ytd-comment-thread-renderer.thread-hitbox {
+            width: 15px !important;
+        }
+
+        ytd-comment-view-model > #body > #author-thumbnail {
+            margin-right: 0.75rem;
+
+            > div.threadline {
+                width: 15px;
             }
         }
     }
 
-    ytd-comment-thread-renderer > div.ytd-comment-thread-renderer.thread-hitbox {
-        width: 15px !important;
+    /* Remove margin for recommended videos */
+    yt-content-metadata-view-model > .yt-content-metadata-view-model__metadata-row {
+        margin-top: 0px;
     }
 
-    ytd-comment-view-model > div#body > div#author-thumbnail > div.threadline {
-        width: 15px;
+    /* Reduce padding */
+    yt-live-chat-message-input-renderer.yt-live-chat-renderer {
+        padding: 5px;
+
+        > #container > #top > #right > #count-container {
+            margin-left: 0px;
+        }
+    }
+
+    /* Weird gap between like button and dropdown menu */
+    yt-button-view-model.ytd-menu-renderer:has(> button-view-model:empty:only-child) {
+        display: none;
     }
 }
