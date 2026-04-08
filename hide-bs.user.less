@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.8.0
+@version 1.9.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -31,6 +31,7 @@
 @var select aiSummary "AI Summary" ["show", "hide", "soft-hide", "replace"]
 @var select clarifyBox "Info Box Underneath Video" ["show", "hide", "soft-hide", "replace"]
 @var select chatInfoBox "Live Chat Notice Box" ["show", "hide", "soft-hide", "replace"]
+@var select quizBox "Quizzes" ["show", "hide", "soft-hide", "replace"]
 @var select teaserCarousel "Whatever The Fuck Is Beside Description" ["show", "hide", "soft-hide", "smaller"]
 @var select searchThumbnail "Search Suggestion Thumbnail" ["show", "hide", "soft-hide"]
 @var select joinButton "Join Button" ["show", "hide", "soft-hide"]
@@ -124,7 +125,9 @@
     }
 
     /* Recommended video */
-    yt-lockup-view-model:is(.ytd-item-section-renderer, .ytd-watch-next-secondary-results-renderer) {
+    yt-lockup-view-model:is(.ytd-item-section-renderer, .ytd-watch-next-secondary-results-renderer),
+    /* Search result video */
+    ytd-video-renderer.ytd-item-section-renderer[is-search] {
         /* Haven't seen any members-only video got recommended yet (thank goodness 😇) */
         /* Begone beggars (this might be not too accurate selector) */
         &:has(badge-shape.yt-badge-shape--commerce) {
@@ -172,14 +175,6 @@
         /* Unverify raygun 🔫 */
         &:has(ytd-badge-supported-renderer.ytd-channel-name > div > badge-shape[aria-label = "Verified"]) {
             .hide(@verifiedVideo);
-        }
-    }
-
-    /* Search result video */
-    ytd-video-renderer.ytd-item-section-renderer {
-        /* Collab? More like shitting all over my feed 🤬 */
-        &:has(yt-avatar-stack-view-model) {
-            .hide(@collabVideo);
         }
     }
 
@@ -267,12 +262,12 @@
         /* Live chat item */
         yt-live-chat-text-message-renderer& {
             /* Fuck your membership in particular */
-            &[author-type = "member"] {
+            &:has(yt-live-chat-author-badge-renderer.yt-live-chat-author-chip[type = "member"]) {
                 .hide(@membersChat);
             }
 
             /* Moderator? More like instigator amirite */
-            &[author-type = "moderator"] {
+            &:has(yt-live-chat-author-badge-renderer.yt-live-chat-author-chip[type = "moderator"]) {
                 .hide(@moderatorChat);
             }
 
@@ -280,6 +275,12 @@
             &[author-type = "owner"] {
                 .hide(@ownerChat);
             }
+        }
+
+        /* Congrats! You're now a memberslave! */
+        ytd-sponsorships-live-chat-gift-purchase-announcement-renderer&,
+        ytd-sponsorships-live-chat-gift-redemption-announcement-renderer& {
+            .hide(@superChat);
         }
 
         /* Youtube chat is some of the most retarded alive */
@@ -306,14 +307,18 @@
         }
 
         /* Chat, jerk it a little */
-        yt-live-chat-banner-manager&:has(yt-live-chat-banner-chat-summary-renderer) {
+        yt-live-chat-banner-manager& {
             /* Yet to do replacement, so yeah... */
             .handle(replace) {
-                .hide(soft-hide);
+                yt-live-chat-banner-chat-summary-renderer {
+                    .hide(soft-hide);
+                }
             }
 
             .handle(@v) {
-                .hide(@v);
+                &:has(yt-live-chat-banner-chat-summary-renderer) {
+                    .hide(@v);
+                }
             }
 
             .handle(@aiSummary);
@@ -335,7 +340,7 @@
 
     /* Badge of simp */
     yt-button-view-model.yt-live-chat-text-message-renderer:has(> button-view-model > button[aria-label ^= "#"]) {
-        .hide(@leaderboardBadge);
+        .hide(@leaderboardBadge) !important;
     }
 
     /* Artificial Idiot box is back in style 😎 */
@@ -411,6 +416,11 @@
         }
 
         .handle(@aiSummary);
+    }
+
+    /* Quiz nope. We ain't examming here bucko. */
+    #teaser-carousel.ytd-watch-metadata:has(yt-carousel-item-view-model[aria-label = "Quizzes"]) {
+        .hide(@quizBox);
     }
 
     /* Fuck your freedom to think */
@@ -540,7 +550,7 @@
     }
 
     /* Reinventing facebook wall, eh? */
-    yt-flexible-actions-view-model > div:has(> button-view-model > a[aria-label = "Visit Community"]) {
+    yt-flexible-actions-view-model > div:has(> button-view-model > a[aria-label ^= "Community"]) {
         .hide(@communityButton);
     }
 

@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.11
+@version        0.0.12
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -27,12 +27,14 @@
         width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) - 0.01px) !important;
     }
 
-    ytd-rich-item-renderer.ytd-rich-shelf-renderer[is-shelf-item] {
+    /* Patch shorts */
+    ytd-rich-item-renderer.ytd-rich-shelf-renderer[is-shelf-item],
+    ytd-rich-item-renderer.ytd-rich-grid-renderer[is-shorts-grid] {
         width: calc(100% / var(--ytd-rich-grid-slim-items-per-row) - var(--ytd-rich-grid-item-margin) - 0.01px) !important;
-        /* Patch shorts */
-        &:not([hidden]) {
-            display: block !important;
-        }
+    }
+
+    ytd-rich-item-renderer.ytd-rich-shelf-renderer[is-shelf-item]:not([hidden]) {
+        display: block !important;
     }
 
     [page-subtype = "channels"],
@@ -128,7 +130,8 @@
     }
 
     /* Fix buttons */
-    button.yt-spec-button-shape-next {
+    button.yt-spec-button-shape-next,
+    .ytChipShapeChip {
         border-radius: buttonRadius;
     }
 
@@ -224,7 +227,7 @@
 
                     /* Fix margins */
                     > .ytd-item-section-renderer {
-                        margin-top: 0.2em;
+                        margin-top: 0.2rem;
                     }
                 }
             }
@@ -234,20 +237,29 @@
             > #columns {
                 > #primary {
                     /* Fix margins */
-                    /* margin-left: 0px; */
+                    max-width: calc(min(var(--ytd-watch-flexy-max-player-width), var(--dcpyt-max-primary-width)));
+                    margin-left: 8px;
                     padding-right: 0px;
-                    padding-top: 0.5rem;
+                    padding-top: 8px;
                 }
 
                 > #secondary {
                     /* Fix margins */
-                    padding-left: 0.75rem;
                     padding-right: 0px;
+                    padding-left: 8px;
                     padding-top: 0.5rem;
-                    width: calc(var(--ytd-watch-flexy-sidebar-width) + 32px - 0.75rem);
+                    width: calc(var(--ytd-watch-flexy-sidebar-width) + var(--ytd-watch-flexy-horizontal-page-margin) * 2 - 8px);
                 }
             }
+
+            &:not([is-four-three-to-sixteen-nine-video_]):not([is-extra-wide-video_]) > #columns > #primary {
+                max-width: calc(min((100vh - var(--ytd-watch-flexy-masthead-height) - 8px - var(--ytd-watch-flexy-space-below-player)) * 1.7777777778, var(--dcpyt-max-primary-width)));
+            }
         }
+
+        --ytd-watch-flexy-max-player-width: calc((100vh - var(--ytd-watch-flexy-masthead-height) - 8px - var(--ytd-watch-flexy-space-below-player))*(var(--ytd-watch-flexy-width-ratio)/var(--ytd-watch-flexy-height-ratio)));
+        --ytd-watch-flexy-max-player-height: calc(100vh - var(--ytd-watch-flexy-masthead-height) - 8px - var(--ytd-watch-flexy-space-below-player));
+        --dcpyt-max-primary-width: calc(100vw - var(--ytd-watch-flexy-horizontal-page-margin) * 4 - var(--ytd-watch-flexy-sidebar-width));
     }
 
     /* Comments */
@@ -322,9 +334,12 @@
         --ytd-rich-grid-item-margin: 4px;
 
         ytd-section-list-renderer > #contents > ytd-item-section-renderer > #contents {
-            /* Fix excessive bottom margin */
-            > ytd-video-renderer {
+            /* Fix excessive margins */
+            > * {
+                margin-top: 0px !important;
                 margin-bottom: 0px;
+                margin-left: 1px;
+                margin-right: 1px;
             }
 
             /* No shorts */
@@ -337,6 +352,11 @@
     /* Disable touchy feedbacky ma */
     yt-lockup-view-model > div.yt-lockup-view-model > yt-touch-feedback-shape {
         display: none;
+    }
+
+    ytd-rich-item-renderer.ytd-rich-item-renderer-highlight:is(.ytd-rich-shelf-renderer[is-shelf-item], .ytd-rich-grid-renderer[is-shorts-grid]) {
+        background-color: unset !important;
+        box-shadow: unset !important;
     }
 
     /* Reduce padding under the like/dislike button */
@@ -461,5 +481,34 @@
     /* Weird gap between like button and dropdown menu */
     yt-button-view-model.ytd-menu-renderer:has(> button-view-model:empty:only-child) {
         display: none;
+    }
+
+    /* Reduce margin for related stuff on top of recommendation */
+    iron-selector#chips > yt-chip-cloud-chip-renderer.yt-chip-cloud-renderer {
+        margin-top: 0px;
+        margin-bottom: 0px;
+        margin-right: 0.25rem;
+    }
+
+    yt-lockup-view-model > div.yt-lockup-view-model {
+        /* Reduce padding below thumbnail */
+        &.yt-lockup-view-model--vertical > a.yt-lockup-view-model__content-image {
+            padding-bottom: 0.2rem;
+        }
+
+        /* Reduce padding beside thumbnail */
+        &.yt-lockup-view-model--horizontal > a.yt-lockup-view-model__content-image {
+            padding-right: 0.2rem;
+        }
+
+        /* Reduce margin with subscription buttons below video */
+        > div.yt-lockup-view-model__metadata > lockup-attachments-view-model > div.ytLockupAttachmentsViewModelAttachment {
+            margin-top: 0px;
+        }
+    }
+
+    /* Remove overflow for shorts reel in recommended */
+    ytd-reel-shelf-renderer.ytd-item-section-renderer > #contents > yt-horizontal-list-renderer.ytd-reel-shelf-renderer > #right-arrow {
+        right: 20px;
     }
 }

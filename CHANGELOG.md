@@ -3,6 +3,20 @@
 
 ## Hide Youtube BS
 
+### v1.9.0
+
+#### Additions
+
+- Add quiz.
+
+#### Fixes
+
+- Combine search result video selector with recommended.
+- Fix when moderator is also a member (thanks ViperKing 👍).
+- Fix members gift.
+- Fix AI chat summary (still yet to do replacement).
+- Fix selector for community button.
+
 ### v1.8.0
 
 #### Additions
