@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.12
+@version        0.0.13
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -349,11 +349,6 @@
         }
     }
 
-    /* Disable touchy feedbacky ma */
-    yt-lockup-view-model > div.yt-lockup-view-model > yt-touch-feedback-shape {
-        display: none;
-    }
-
     ytd-rich-item-renderer.ytd-rich-item-renderer-highlight:is(.ytd-rich-shelf-renderer[is-shelf-item], .ytd-rich-grid-renderer[is-shorts-grid]) {
         background-color: unset !important;
         box-shadow: unset !important;
@@ -490,20 +485,27 @@
         margin-right: 0.25rem;
     }
 
-    yt-lockup-view-model > div.yt-lockup-view-model {
-        /* Reduce padding below thumbnail */
-        &.yt-lockup-view-model--vertical > a.yt-lockup-view-model__content-image {
-            padding-bottom: 0.2rem;
-        }
+    @css {
+        yt-lockup-view-model > div:is(.yt-lockup-view-model, .ytLockupViewModelHost) {
+            /* Reduce padding below thumbnail */
+            &:is(.yt-lockup-view-model--vertical, .ytLockupViewModelVertical) > a:is(.yt-lockup-view-model__content-image, .ytLockupViewModelContentImage) {
+                padding-bottom: 0.2rem;
+            }
 
-        /* Reduce padding beside thumbnail */
-        &.yt-lockup-view-model--horizontal > a.yt-lockup-view-model__content-image {
-            padding-right: 0.2rem;
-        }
+            /* Reduce padding beside thumbnail */
+            &:is(.yt-lockup-view-model--horizontal, .ytLockupViewModelHorizontal) > a:is(.yt-lockup-view-model__content-image, .ytLockupViewModelContentImage) {
+                padding-right: 0.2rem;
+            }
 
-        /* Reduce margin with subscription buttons below video */
-        > div.yt-lockup-view-model__metadata > lockup-attachments-view-model > div.ytLockupAttachmentsViewModelAttachment {
-            margin-top: 0px;
+            /* Reduce margin with subscription buttons below video */
+            > div:is(.yt-lockup-view-model__metadata, .ytLockupViewModelMetadata) > lockup-attachments-view-model > div.ytLockupAttachmentsViewModelAttachment {
+                margin-top: 0px;
+            }
+
+            /* Disable touchy feedbacky ma */
+            > yt-touch-feedback-shape:is(.yt-lockup-view-model, .ytSpecTouchFeedbackShapeHost) {
+                display: none;
+            }
         }
     }
 
