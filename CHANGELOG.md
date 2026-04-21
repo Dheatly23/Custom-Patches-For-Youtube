@@ -3,6 +3,19 @@
 
 ## Hide Youtube BS
 
+### v1.10.0
+
+#### Additions
+
+- Add option to apply button options to menu items.
+- Add remove ads button.
+
+#### Fixes
+
+- Fix selectors for subscription and channel videos.
+- Fix collab in channel videos.
+- Fix quiz box in description.
+
 ### v1.9.0
 
 #### Additions
