@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.13
+@version        0.0.14
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -16,79 +16,151 @@
 @var text  searchSideWidth             "Sidebar width" 100px
 ==/UserStyle== */
 @-moz-document domain("www.youtube.com") {
-    /* Fix margins */
-    ytd-rich-item-renderer:is(.ytd-rich-grid-renderer, .ytd-rich-shelf-renderer) {
-        margin-left: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
-        margin-right: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
-        margin-bottom: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
-    }
-
-    ytd-rich-item-renderer.ytd-rich-grid-renderer {
-        width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) - 0.01px) !important;
-    }
-
-    /* Patch shorts */
-    ytd-rich-item-renderer.ytd-rich-shelf-renderer[is-shelf-item],
-    ytd-rich-item-renderer.ytd-rich-grid-renderer[is-shorts-grid] {
-        width: calc(100% / var(--ytd-rich-grid-slim-items-per-row) - var(--ytd-rich-grid-item-margin) - 0.01px) !important;
-    }
-
-    ytd-rich-item-renderer.ytd-rich-shelf-renderer[is-shelf-item]:not([hidden]) {
-        display: block !important;
-    }
-
-    [page-subtype = "channels"],
-    [page-subtype = "subscriptions"] :is(ytd-rich-grid-renderer, ytd-rich-shelf-renderer) {
-        --ytd-rich-grid-item-margin: 2px !important;
-        --ytd-rich-grid-row-margin: 2px !important;
-    }
-
-    /* Community post full width */
-    [page-subtype = "channels"] ytd-section-list-renderer > #contents > :is(ytd-backstage-items, ytd-comments) {
-        max-width: 100%;
-    }
-
-    /* Channel video full width */
-    [page-subtype = "channels"] ytd-two-column-browse-results-renderer.ytd-browse {
-        max-width: unset;
-        width: 100% !important;
-
-        > #primary {
-            padding-inline: 0px !important;
-        }
-    }
-
-    /* Subscription box full width */
-    [page-subtype = "subscriptions"] ytd-two-column-browse-results-renderer.ytd-browse.grid {
-        width: 100% !important;
-    }
-
-    /* Small buttons for recommended videos */
-    yt-lockup-metadata-view-model {
-        > .yt-lockup-metadata-view-model__text-container > h3 > a {
-            padding-right: 16px;
+    @css {
+        /* Fix margins */
+        ytd-rich-item-renderer:is(.ytd-rich-grid-renderer, .ytd-rich-shelf-renderer) {
+            margin-left: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
+            margin-right: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
+            margin-bottom: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
         }
 
-        > .yt-lockup-metadata-view-model__menu-button {
-            right: 0px;
+        ytd-rich-item-renderer.ytd-rich-grid-renderer {
+            width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) - 0.01px) !important;
+        }
 
-            > button-view-model > button[aria-label = "More actions"] {
-                width: 16px;
+        /* Patch shorts */
+        ytd-rich-item-renderer.ytd-rich-shelf-renderer[is-shelf-item],
+        ytd-rich-item-renderer.ytd-rich-grid-renderer[is-shorts-grid] {
+            width: calc(100% / var(--ytd-rich-grid-slim-items-per-row) - var(--ytd-rich-grid-item-margin) - 0.01px) !important;
+        }
+
+        ytd-rich-item-renderer.ytd-rich-shelf-renderer[is-shelf-item]:not([hidden]) {
+            display: block !important;
+        }
+
+        [page-subtype = "channels"],
+        [page-subtype = "subscriptions"] :is(ytd-rich-grid-renderer, ytd-rich-shelf-renderer) {
+            --ytd-rich-grid-item-margin: 2px !important;
+            --ytd-rich-grid-row-margin: 2px !important;
+        }
+
+        /* Community post full width */
+        [page-subtype = "channels"] ytd-section-list-renderer > #contents > :is(ytd-backstage-items, ytd-comments) {
+            max-width: 100%;
+        }
+
+        /* Channel video full width */
+        [page-subtype = "channels"] ytd-two-column-browse-results-renderer.ytd-browse {
+            max-width: unset;
+            width: 100% !important;
+
+            > #primary {
+                padding-inline: 0px !important;
             }
         }
-    }
 
-    /* Small buttons for shorts */
-    ytm-shorts-lockup-view-model {
-        > .shortsLockupViewModelHostOutsideMetadata {
-            padding-top: 0.2rem;
+        /* Subscription box full width */
+        [page-subtype = "subscriptions"] ytd-two-column-browse-results-renderer.ytd-browse.grid {
+            width: 100% !important;
         }
 
-        > .shortsLockupViewModelHostOutsideMetadataHasMenu {
-            padding-right: 16px;
+        yt-lockup-metadata-view-model.ytLockupMetadataViewModelHost {
+            /* Reduce padding for menu button */
+            > :is(.yt-lockup-metadata-view-model__text-container, .ytLockupMetadataViewModelTextContainer) > h3 > a {
+                padding-right: 16px;
+            }
 
-            > .shortsLockupViewModelHostOutsideMetadataMenu > button {
-                width: 16px;
+            /* Reduce margin for avatar */
+            > .ytLockupMetadataViewModelAvatar {
+                margin-right: 0.25rem;
+
+                &:has(.yt-spec-avatar-shape--live-ring) {
+                    margin-right: 0.75rem;
+                }
+            }
+
+            /* Small buttons for recommended videos */
+            > :is(.yt-lockup-metadata-view-model__menu-button, .ytLockupMetadataViewModelMenuButton) {
+                right: 0px;
+
+                > button-view-model.ytSpecButtonViewModelHost > button[aria-label = "More actions"] {
+                    width: 16px;
+
+                    /* Override youtube catppuccin */
+                    &:hover {
+                        background-color: transparent !important;
+                    }
+                }
+            }
+        }
+
+        /* Small buttons for shorts */
+        ytm-shorts-lockup-view-model {
+            > .shortsLockupViewModelHostOutsideMetadata {
+                padding-top: 0.2rem;
+            }
+
+            > .shortsLockupViewModelHostOutsideMetadataHasMenu {
+                padding-right: 16px;
+
+                > .shortsLockupViewModelHostOutsideMetadataMenu > button {
+                    width: 16px;
+                }
+            }
+        }
+
+        /* Channel video */
+        ytd-rich-grid-media.ytd-rich-item-renderer > #dismissible > #details {
+            /* Reduce padding for menu button */
+            > #meta {
+                padding-right: 16px;
+                flex: 1;
+
+                > h3 {
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+
+                > ytd-badge-supported-renderer {
+                    margin-top: 0px;
+                    margin-right: 0px;
+                }
+            }
+
+            /* Reduce margin for avatar */
+            > .ytLockupMetadataViewModelAvatar {
+                margin-right: 0.25rem;
+            }
+
+            /* Small menu button*/
+            > #menu > ytd-menu-renderer {
+                right: 0px;
+
+                > yt-icon-button {
+                    width: 16px;
+                    height: 24px;
+
+                    > button > yt-icon {
+                        right: 4px;
+                    }
+                }
+            }
+        }
+
+        /* Reduce padding for dropdown menu */
+        tp-yt-iron-dropdown {
+            ytd-menu-popup-renderer.ytd-popup-container[role = "menu"] {
+                border-radius: 0px;
+
+                > #items.ytd-menu-popup-renderer {
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                }
+            }
+
+            tp-yt-paper-listbox#menu.yt-dropdown-menu {
+                padding-top: 0px;
+                padding-bottom: 0px;
             }
         }
     }
@@ -103,7 +175,9 @@
     /* Channel avatar live ring -> square and image too */
     yt-avatar-shape {
         div.yt-spec-avatar-shape--live-ring::after,
-        img.yt-spec-avatar-shape__image {
+        div.ytSpecAvatarShapeLiveRing::after,
+        img.yt-spec-avatar-shape__image,
+        img.ytSpecAvatarShapeImage {
             border-radius: profileRadius;
         }
 
@@ -120,7 +194,9 @@
     /* Fix video thumbnail */
     yt-thumbnail-view-model,
     /* Pinned live chat message */
-    yt-live-chat-banner-renderer {
+    yt-live-chat-banner-renderer,
+    /* Dropdown menu */
+    tp-yt-iron-dropdown.tp-yt-paper-menu-button tp-yt-paper-listbox#menu.yt-dropdown-menu {
         border-radius: borderRadius !important;
     }
 
@@ -131,8 +207,29 @@
 
     /* Fix buttons */
     button.yt-spec-button-shape-next,
-    .ytChipShapeChip {
+    .ytChipShapeChip,
+    /* Interaction hover */
+    yt-interaction.circular > div.stroke.yt-interaction,
+    yt-interaction.circular > div.fill.yt-interaction,
+    /* Topbar button */
+    yt-icon-button.ytd-masthead:hover,
+    ytd-notification-topbar-button-renderer.ytd-masthead:hover,
+    ytd-topbar-menu-button-renderer.ytd-masthead:hover,
+    /* All buttons basically */
+    .ytSpecButtonShapeNextHost {
         border-radius: buttonRadius;
+    }
+
+    .ytSpecButtonShapeNextHost {
+        &.ytSpecButtonShapeNextSegmentedStart {
+            border-top-left-radius: buttonRadius;
+            border-bottom-left-radius: buttonRadius;
+        }
+
+        &.ytSpecButtonShapeNextSegmentedEnd {
+            border-top-right-radius: buttonRadius;
+            border-bottom-right-radius: buttonRadius;
+        }
     }
 
     /* Fix border for extra stuff in description */
@@ -240,15 +337,15 @@
                     max-width: calc(min(var(--ytd-watch-flexy-max-player-width), var(--dcpyt-max-primary-width)));
                     margin-left: 8px;
                     padding-right: 0px;
-                    padding-top: 8px;
+                    padding-top: 0.5rem;
                 }
 
                 > #secondary {
                     /* Fix margins */
                     padding-right: 0px;
-                    padding-left: 8px;
+                    padding-left: 0.25rem;
                     padding-top: 0.5rem;
-                    width: calc(var(--ytd-watch-flexy-sidebar-width) + var(--ytd-watch-flexy-horizontal-page-margin) * 2 - 8px);
+                    width: calc(var(--ytd-watch-flexy-sidebar-width) + var(--ytd-watch-flexy-horizontal-page-margin) * 2 - 0.25rem);
                 }
             }
 
@@ -403,8 +500,8 @@
         display: flex !important;
     }
 
-    /* Patch margins and compactify comment thread */
     @css {
+        /* Patch margins and compactify comment thread */
         yt-sub-thread {
             > .ytSubThreadSubThreadContent {
                 margin-top: 0px;
@@ -457,35 +554,28 @@
                 width: 15px;
             }
         }
-    }
 
-    /* Remove margin for recommended videos */
-    yt-content-metadata-view-model > .yt-content-metadata-view-model__metadata-row {
-        margin-top: 0px;
-    }
-
-    /* Reduce padding */
-    yt-live-chat-message-input-renderer.yt-live-chat-renderer {
-        padding: 5px;
-
-        > #container > #top > #right > #count-container {
-            margin-left: 0px;
+        /* Remove margin for recommended videos */
+        yt-content-metadata-view-model > :is(.yt-content-metadata-view-model__metadata-row, .ytContentMetadataViewModelMetadataRow) {
+            margin-top: 0px;
         }
-    }
 
-    /* Weird gap between like button and dropdown menu */
-    yt-button-view-model.ytd-menu-renderer:has(> button-view-model:empty:only-child) {
-        display: none;
-    }
+        /* Reduce padding */
+        yt-live-chat-message-input-renderer.yt-live-chat-renderer {
+            padding: 5px;
 
-    /* Reduce margin for related stuff on top of recommendation */
-    iron-selector#chips > yt-chip-cloud-chip-renderer.yt-chip-cloud-renderer {
-        margin-top: 0px;
-        margin-bottom: 0px;
-        margin-right: 0.25rem;
-    }
+            > #container > #top > #right > #count-container {
+                margin-left: 0px;
+            }
+        }
 
-    @css {
+        /* Reduce margin for related stuff on top of recommendation */
+        iron-selector#chips > yt-chip-cloud-chip-renderer.yt-chip-cloud-renderer {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            margin-right: 0.25rem;
+        }
+
         yt-lockup-view-model > div:is(.yt-lockup-view-model, .ytLockupViewModelHost) {
             /* Reduce padding below thumbnail */
             &:is(.yt-lockup-view-model--vertical, .ytLockupViewModelVertical) > a:is(.yt-lockup-view-model__content-image, .ytLockupViewModelContentImage) {
@@ -507,10 +597,38 @@
                 display: none;
             }
         }
-    }
 
-    /* Remove overflow for shorts reel in recommended */
-    ytd-reel-shelf-renderer.ytd-item-section-renderer > #contents > yt-horizontal-list-renderer.ytd-reel-shelf-renderer > #right-arrow {
-        right: 20px;
+        /* Comment menu button */
+        ytd-menu-renderer.ytd-comment-view-model > yt-icon-button.ytd-menu-renderer {
+            /* Reduce size */
+            width: 16px;
+
+            > button > yt-icon.ytd-menu-renderer {
+                position: relative;
+                right: 4px;
+            }
+
+            > button:focus > yt-icon.ytd-menu-renderer {
+                right: 6px;
+            }
+        }
+
+        /* Repatch focus */
+        yt-icon-button.ytd-menu-renderer > button:focus {
+            border-width: 2px;
+            border-style: solid;
+            border-color: #fff;
+        }
+
+        /* Disable touchy feedbacky ma */
+        yt-icon-button.ytd-menu-renderer > yt-interaction.yt-icon-button#interaction,
+        yt-interaction.ytd-watch-metadata#description-interaction {
+            display: none;
+        }
+
+        /* Remove overflow for shorts reel in recommended */
+        ytd-reel-shelf-renderer.ytd-item-section-renderer > #contents > yt-horizontal-list-renderer.ytd-reel-shelf-renderer > #right-arrow {
+            right: 20px;
+        }
     }
 }
