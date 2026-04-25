@@ -3,6 +3,12 @@
 
 ## Hide Youtube BS
 
+### v1.10.1
+
+#### Additions
+
+- Adds the new gift type thingy on chat (idk it looks like TikTok).
+
 ### v1.10.0
 
 #### Additions
