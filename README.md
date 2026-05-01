@@ -26,7 +26,7 @@ Marie Kondo your Youtube experience, the way it's meant to be.
 
 ### Restore Old Youtube End Screen Grid
 
-Source: `old-end-screen.user.less`
+Source: `old-end-screen.user.css`
 
 Youtube hides the old grid view with V key.
 This userstyle restores it so you don't have to press v everytime.

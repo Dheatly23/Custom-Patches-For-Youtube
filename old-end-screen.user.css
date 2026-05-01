@@ -1,13 +1,13 @@
 /* ==UserStyle==
 @name Restore Old Youtube End Screen Grid
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.0.0
+@version 1.0.1
 @description Restore old end screen grid by force-hiding the new one and force-showing the old one.
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
 @supportURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
 @license Apache-2.0
-@preprocessor less
+@preprocessor css
 ==/UserStyle== */
 
 @-moz-document domain("www.youtube.com") {

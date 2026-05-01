@@ -179,6 +179,13 @@ First launch.
 
 ## Restore Old Youtube End Screen Grid
 
+### v1.0.1
+
+Change preprocessor to default (from less).
+
+NOTE: Update will not work because file extension is changed.
+Please manually reinstall the style.
+
 ### v1.0.0
 
 First launch.
