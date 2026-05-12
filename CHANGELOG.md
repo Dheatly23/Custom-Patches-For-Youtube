@@ -3,6 +3,18 @@
 
 ## Hide Youtube BS
 
+### v1.11.0
+
+#### Fixes
+
+- Fix all video selectors.
+
+  NOTE: Because the pussies (Google) at W3C aren't adding text selector,
+  we have to rely on less elegant d selector.
+  It has been used for many stuff, but Google being Google
+  swore to break every customization
+  (ok maybe not deliberately but what's the difference).
+
 ### v1.10.1
 
 #### Additions

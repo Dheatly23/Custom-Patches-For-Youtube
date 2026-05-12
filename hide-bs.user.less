@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.10.1
+@version 1.11.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -93,43 +93,10 @@
         }
     }
 
-    /* Subscription and channel videos */
-    ytd-rich-item-renderer.ytd-rich-grid-renderer {
-        /* Fuck membership */
-        &:has(ytd-badge-supported-renderer.ytd-rich-grid-media badge-shape[aria-label ^= "Members"]) {
-            .hide(@membersVideo);
-        }
-
-        /* Begone beggars */
-        &:has(ytd-badge-supported-renderer.ytd-rich-grid-media badge-shape[aria-label = "Fundraiser"]) {
-            .hide(@fundraiserVideo);
-        }
-
-        /* Unverify raygun 🔫 */
-        &:has(yt-content-metadata-view-model > div:first-child svg) {
-            .hide(@verifiedVideo);
-        }
-
-        /* Jazz music stops (yup, another d selector yay 🎉) */
-        &:has(badge-shape.yt-badge-shape--thumbnail-default > .yt-badge-shape__icon svg > path[d = "M5.5 1.383V6.88a2.25 2.25 0 101 1.871V4.6l2.743 1.647a.5.5 0 00.757-.43V3.485a.5.5 0 00-.243-.429l-3.5-2.1a.5.5 0 00-.757.427Z"]) {
-            .hide(@musicVideo);
-        }
-
-        /* Unalive yourself (fuck youtube for inconsistenly removing aria-label) */
-        &:has(badge-shape.yt-badge-shape--thumbnail-live > .yt-badge-shape__icon svg > path[d = "M4.222 4.223a11 11 0 000 15.555 1 1 0 101.414-1.414 9 9 0 010-12.727 1 1 0 10-1.414-1.414Zm13.79.353a1 1 0 000 1.414 8.5 8.5 0 010 12.022 1 1 0 001.413 1.414 10.501 10.501 0 000-14.85 1 1 0 00-1.413 0Zm-2.83 2.827a1 1 0 000 1.414 4.501 4.501 0 010 6.365 1.001 1.001 0 001.414 1.414 6.5 6.5 0 000-9.193 1 1 0 00-1.415 0Zm-7.78 0a6.5 6.5 0 000 9.194 1 1 0 001.415-1.415 4.5 4.5 0 010-6.364 1.001 1.001 0 00-1.415-1.415ZM12 10a2 2 0 100 4 2 2 0 000-4Z"]) {
-            .hide(@liveVideo);
-        }
-
-        /* Collab? More like shitting all over my feed 🤬 */
-        &:has(yt-avatar-stack-view-model) {
-            .hide(@collabVideo);
-        }
-    }
-
     /* Channels page */
     [page-subtype = "channels"] {
         /* Channel videos */
-        ytd-rich-item-renderer.ytd-rich-grid-renderer {
+        ytd-rich-item-renderer.ytd-rich-grid-renderer:has(> #content > yt-lockup-view-model.ytd-rich-item-renderer) {
             /* Collab? More like shitting all over my feed 🤬 */
             &:has(ytd-video-meta-block.ytd-rich-grid-media > #metadata > #byline-container:not([hidden])) {
                 .hide(@collabVideo);
@@ -140,15 +107,22 @@
     /* Recommended video */
     yt-lockup-view-model:is(.ytd-item-section-renderer, .ytd-watch-next-secondary-results-renderer),
     /* Search result video */
-    ytd-video-renderer.ytd-item-section-renderer[is-search] {
+    ytd-video-renderer.ytd-item-section-renderer[is-search],
+    /* Subscription and channel videos */
+    ytd-rich-item-renderer.ytd-rich-grid-renderer:has(> #content > yt-lockup-view-model.ytd-rich-item-renderer) {
         /* Haven't seen any members-only video got recommended yet (thank goodness 😇) */
-        /* Begone beggars (this might be not too accurate selector) */
-        &:has(badge-shape.yt-badge-shape--commerce) {
+        /* Fuck membership */
+        &:has(badge-shape.ytBadgeShapeCommerce > .ytBadgeShapeIcon svg > g > path[d = "M6 .5a5.5 5.5 0 100 11 5.5 5.5 0 000-11Zm.27 2.045.906 1.837 2.027.295a.3.3 0 01.166.511l-1.467 1.43.346 2.019a.3.3 0 01-.435.316L6 8l-1.813.953a.3.3 0 01-.435-.316l.346-2.019-1.467-1.43a.3.3 0 01.166-.511l2.027-.295.907-1.837a.3.3 0 01.539 0Z"]) {
+            .hide(@membersVideo);
+        }
+
+        /* Begone beggars */
+        &:has(badge-shape.ytBadgeShapeCommerce > .ytBadgeShapeText:only-child) {
             .hide(@fundraiserVideo);
         }
 
         /* Fuck AI dubbing (i don't like d attribute selector but ehhhhhhhhhhh) */
-        &:has(badge-shape.yt-badge-shape--default > .yt-badge-shape__icon svg > path[d = "M19.4.2a1 1 0 00-.2 1.4 9 9 0 01-.022 10.83 1 1 0 001.595 1.206A11 11 0 0020.8.4a1 1 0 00-1.4-.2ZM10 2a5 5 0 100 10 5 5 0 000-10Zm6.17.3a1 1 0 00-.028 1.414c.895.932 1.365 2.114 1.358 3.312-.006 1.199-.49 2.378-1.396 3.302a1.001 1.001 0 101.427 1.4c1.257-1.281 1.959-2.953 1.969-4.69.009-1.738-.673-3.416-1.916-4.71A1 1 0 0016.17 2.3ZM10 13a8 8 0 00-8 8 1 1 0 001 1h14l.102-.005A1 1 0 0018 21a8 8 0 00-8-8Z"]) {
+        &:has(badge-shape.ytBadgeShapeDefault > .ytBadgeShapeIcon svg > path[d = "M19.4.2a1 1 0 00-.2 1.4 9 9 0 01-.022 10.83 1 1 0 001.595 1.206A11 11 0 0020.8.4a1 1 0 00-1.4-.2ZM10 2a5 5 0 100 10 5 5 0 000-10Zm6.17.3a1 1 0 00-.028 1.414c.895.932 1.365 2.114 1.358 3.312-.006 1.199-.49 2.378-1.396 3.302a1.001 1.001 0 101.427 1.4c1.257-1.281 1.959-2.953 1.969-4.69.009-1.738-.673-3.416-1.916-4.71A1 1 0 0016.17 2.3ZM10 13a8 8 0 00-8 8 1 1 0 001 1h14l.102-.005A1 1 0 0018 21a8 8 0 00-8-8Z"]) {
             .hide(@autoDubVideo);
         }
 
@@ -158,36 +132,18 @@
         }
 
         /* Jazz music stops (yup, another d selector yay 🎉) */
-        &:has(badge-shape.yt-badge-shape--thumbnail-default > .yt-badge-shape__icon svg > path[d = "M5.5 1.383V6.88a2.25 2.25 0 101 1.871V4.6l2.743 1.647a.5.5 0 00.757-.43V3.485a.5.5 0 00-.243-.429l-3.5-2.1a.5.5 0 00-.757.427Z"]) {
+        &:has(badge-shape.ytBadgeShapeThumbnailDefault > .ytBadgeShapeIcon svg > path[d = "M5.5 1.383V6.88a2.25 2.25 0 101 1.871V4.6l2.743 1.647a.5.5 0 00.757-.43V3.485a.5.5 0 00-.243-.429l-3.5-2.1a.5.5 0 00-.757.427Z"]) {
             .hide(@musicVideo);
         }
 
         /* Unalive yourself (fuck youtube for inconsistenly removing aria-label) */
-        &:has(badge-shape.yt-badge-shape--thumbnail-live > .yt-badge-shape__icon svg > path[d = "M4.222 4.223a11 11 0 000 15.555 1 1 0 101.414-1.414 9 9 0 010-12.727 1 1 0 10-1.414-1.414Zm13.79.353a1 1 0 000 1.414 8.5 8.5 0 010 12.022 1 1 0 001.413 1.414 10.501 10.501 0 000-14.85 1 1 0 00-1.413 0Zm-2.83 2.827a1 1 0 000 1.414 4.501 4.501 0 010 6.365 1.001 1.001 0 001.414 1.414 6.5 6.5 0 000-9.193 1 1 0 00-1.415 0Zm-7.78 0a6.5 6.5 0 000 9.194 1 1 0 001.415-1.415 4.5 4.5 0 010-6.364 1.001 1.001 0 00-1.415-1.415ZM12 10a2 2 0 100 4 2 2 0 000-4Z"]) {
+        &:has(badge-shape.ytBadgeShapeThumbnailLive > .ytBadgeShapeIcon svg > path[d = "M2.111 2.111a.5.5 0 11.707.707 4.501 4.501 0 000 6.364.5.5 0 01-.707.707 5.5 5.5 0 010-7.778Zm7.07 0a.5.5 0 01.708 0 5.5 5.5 0 010 7.778.5.5 0 11-.707-.707 4.5 4.5 0 000-6.364.5.5 0 010-.707ZM3.703 3.702a.5.5 0 11.707.707 2.25 2.25 0 000 3.182.5.5 0 01-.707.707 3.25 3.25 0 01-.705-3.542 3.25 3.25 0 01.705-1.054Zm3.889 0a.5.5 0 01.707 0 3.25 3.25 0 010 4.596.5.5 0 01-.707-.707 2.25 2.25 0 000-3.182.5.5 0 010-.707ZM6 5a1 1 0 110 2 1 1 0 010-2Z"]) {
             .hide(@liveVideo);
         }
 
         /* Collab? More like shitting all over my feed 🤬 */
         &:has(yt-avatar-stack-view-model) {
             .hide(@collabVideo);
-        }
-    }
-
-    /* Probably remnant of an old UI? Only seen it for shorts */
-    ytd-compact-video-renderer:is(.ytd-item-section-renderer, .ytd-watch-next-secondary-results-renderer) {
-        /* Begone beggars (ARIA label is only predicted lmao) */
-        &:has(ytd-badge-supported-renderer.ytd-compact-video-renderer > div > badge-shape[aria-label = "Fundraiser"]) {
-            .hide(@fundraiserVideo);
-        }
-
-        /* Fuck AI dubbing */
-        &:has(ytd-badge-supported-renderer.ytd-compact-video-renderer > div > badge-shape[aria-label = "Auto-dubbed"]) {
-            .hide(@autoDubVideo);
-        }
-
-        /* Unverify raygun 🔫 */
-        &:has(ytd-badge-supported-renderer.ytd-channel-name > div > badge-shape[aria-label = "Verified"]) {
-            .hide(@verifiedVideo);
         }
     }
 
