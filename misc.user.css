@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.14
+@version        0.0.15
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -44,24 +44,64 @@
             --ytd-rich-grid-row-margin: 2px !important;
         }
 
-        /* Community post full width */
-        [page-subtype = "channels"] ytd-section-list-renderer > #contents > :is(ytd-backstage-items, ytd-comments) {
-            max-width: 100%;
-        }
-
-        /* Channel video full width */
-        [page-subtype = "channels"] ytd-two-column-browse-results-renderer.ytd-browse {
-            max-width: unset;
-            width: 100% !important;
-
-            > #primary {
-                padding-inline: 0px !important;
-            }
-        }
-
         /* Subscription box full width */
         [page-subtype = "subscriptions"] ytd-two-column-browse-results-renderer.ytd-browse.grid {
             width: 100% !important;
+
+            > div#primary > ytd-rich-grid-renderer.ytd-two-column-browse-results-renderer > div#contents {
+                width: 100%;
+                margin: 0px;
+            }
+        }
+
+        [page-subtype = "channels"] {
+            /* Community post full width */
+            ytd-section-list-renderer > #contents > :is(ytd-backstage-items, ytd-comments) {
+                max-width: 100%;
+            }
+
+            /* Channel video full width */
+            ytd-two-column-browse-results-renderer.ytd-browse {
+                max-width: unset;
+                width: 100% !important;
+
+                > #primary {
+                    padding-inline: 0px !important;
+                }
+            }
+
+            /* Channel header full width */
+            tp-yt-app-header > div#contentContainer {
+                > div#page-header-container > div:is(#page-header-banner, #page-header) {
+                    padding-left: 0px;
+                    padding-right: 0px;
+                }
+
+                > tp-yt-app-toolbar.ytd-tabbed-page-header > div#tabs-container > div#tabs-inner-container > tp-yt-paper-tabs.ytd-tabbed-page-header {
+                    /* Tab margin (24px) / 2 */
+                    margin-left: 12px;
+                    margin-right: 0px;
+                }
+            }
+
+            /* Reduce margins between channel about header */
+            yt-page-header-view-model > div.ytPageHeaderViewModelContent > div.ytPageHeaderViewModelHeadline > div.ytPageHeaderViewModelHeadlineInfo {
+                /* Full height */
+                align-self: stretch;
+                /* Distribute space evenly between lines */
+                justify-content: space-between;
+
+                > * {
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+                }
+            }
+
+            /* Reduce padding on channel videos chip header */
+            ytd-rich-grid-renderer > div#header > chip-bar-view-model.chip-bar.ytd-rich-grid-renderer,
+            ytd-rich-grid-renderer > div#contents {
+                padding-top: 0.75rem;
+            }
         }
 
         yt-lockup-metadata-view-model.ytLockupMetadataViewModelHost {
@@ -263,7 +303,7 @@
         > #columns {
             > #primary > #primary-inner > #below {
                 /* Fix border of "clarify box" */
-                > #clarify-box > ytd-info-panel-container-renderer {
+                #clarify-box > ytd-info-panel-container-renderer {
                     ytd-info-panel-content-renderer {
                         border-bottom-left-radius: borderRadius;
                         border-bottom-right-radius: borderRadius;
@@ -622,7 +662,8 @@
 
         /* Disable touchy feedbacky ma */
         yt-icon-button.ytd-menu-renderer > yt-interaction.yt-icon-button#interaction,
-        yt-interaction.ytd-watch-metadata#description-interaction {
+        yt-interaction.ytd-watch-metadata#description-interaction,
+        ytd-rich-item-renderer > yt-interaction.ytd-rich-item-renderer#interaction {
             display: none;
         }
 
