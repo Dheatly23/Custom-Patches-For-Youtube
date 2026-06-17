@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.15
+@version        0.0.16
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -631,11 +631,11 @@
             > div:is(.yt-lockup-view-model__metadata, .ytLockupViewModelMetadata) > lockup-attachments-view-model > div.ytLockupAttachmentsViewModelAttachment {
                 margin-top: 0px;
             }
+        }
 
-            /* Disable touchy feedbacky ma */
-            > yt-touch-feedback-shape:is(.yt-lockup-view-model, .ytSpecTouchFeedbackShapeHost) {
-                display: none;
-            }
+        /* Disable touchy feedbacky ma */
+        yt-lockup-view-model:is(.ytd-item-section-renderer, .ytd-rich-item-renderer) yt-touch-feedback-shape {
+            display: none;
         }
 
         /* Comment menu button */
@@ -670,6 +670,21 @@
         /* Remove overflow for shorts reel in recommended */
         ytd-reel-shelf-renderer.ytd-item-section-renderer > #contents > yt-horizontal-list-renderer.ytd-reel-shelf-renderer > #right-arrow {
             right: 20px;
+        }
+
+        /* Fixes for new recommended video */
+        yt-lockup-view-model.ytd-item-section-renderer > .ytLockupViewModelHorizontal {
+            /* Downsize thumbnail size */
+            > a.ytLockupViewModelContentImage {
+                height: 7lh;
+                width: calc(7lh * 16 / 9) !important;
+            }
+
+            /* Reposition hamburger button */
+            > .ytLockupViewModelMetadata > yt-lockup-metadata-view-model > .ytLockupMetadataViewModelMenuButton {
+                top: -6px;
+                opacity: 1;
+            }
         }
     }
 }
