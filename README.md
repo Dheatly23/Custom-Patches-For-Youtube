@@ -31,6 +31,13 @@ Source: `old-end-screen.user.css`
 Youtube hides the old grid view with V key.
 This userstyle restores it so you don't have to press v everytime.
 
+### Change Youtube Country Code
+
+Source: `change-country-code.user.less`
+
+IDK why you want to do that, but now you can.
+Maybe it's useful for streamers 🤷‍♂️?
+
 ### Miscellaneous Patches for Youtube
 
 Source: `misc.user.css`

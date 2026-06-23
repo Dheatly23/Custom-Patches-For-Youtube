@@ -201,3 +201,9 @@ Please manually reinstall the style.
 ### v1.0.0
 
 First launch.
+
+## Change Youtube Country Code
+
+### v1.0.0
+
+First launch.

@@ -1,0 +1,33 @@
+/* ==UserStyle==
+@name Change Youtube Country Code
+@namespace github.com/Dheatly23/Custom-Patches-For-Youtube
+@version 1.0.0
+@description Change the country code in youtube logo (cuz why not?)
+@author Dheatly23
+@homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
+@supportURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
+@license Apache-2.0
+
+@preprocessor less
+@var text ccValue "Replacement value" TS
+==/UserStyle== */
+
+@-moz-document domain("youtube.com") {
+    ytd-topbar-logo-renderer.ytd-masthead#logo {
+        > #country-code {
+            /* Hack to hide original text */
+            color: transparent;
+
+            &::before {
+                content: %("%s", @ccValue);
+
+                /* A bit of extraction from youtube theme. */
+                color: #606060;
+
+                [dark] & {
+                    color: #aaa;
+                }
+            }
+        }
+    }
+}
