@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.16
+@version        0.0.17
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -634,7 +634,7 @@
         }
 
         /* Disable touchy feedbacky ma */
-        yt-lockup-view-model:is(.ytd-item-section-renderer, .ytd-rich-item-renderer) yt-touch-feedback-shape {
+        yt-lockup-view-model > .ytLockupViewModelHost > yt-touch-feedback-shape {
             display: none;
         }
 
