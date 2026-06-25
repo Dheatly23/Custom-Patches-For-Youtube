@@ -3,6 +3,16 @@
 
 ## Hide Youtube BS
 
+### v1.12.0
+
+#### Additions
+
+- Add moderator comment.
+
+#### Fixes
+
+- Fix menu selectors.
+
 ### v1.11.0
 
 #### Fixes
