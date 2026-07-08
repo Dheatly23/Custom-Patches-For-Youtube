@@ -217,3 +217,9 @@ First launch.
 ### v1.0.0
 
 First launch.
+
+## Resize Recommendation Thumbnail
+
+### v1.0.0
+
+First launch.

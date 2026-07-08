@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.17
+@version        0.0.18
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -138,13 +138,21 @@
         ytm-shorts-lockup-view-model {
             > .shortsLockupViewModelHostOutsideMetadata {
                 padding-top: 0.2rem;
+                /* Why tf does it need border radius? */
+                border-radius: 0px;
             }
 
             > .shortsLockupViewModelHostOutsideMetadataHasMenu {
                 padding-right: 16px;
 
-                > .shortsLockupViewModelHostOutsideMetadataMenu > button {
-                    width: 16px;
+                > .shortsLockupViewModelHostOutsideMetadataMenu {
+                    top: -6px;
+
+                    > button {
+                        width: 16px;
+                        /* Remove hover background */
+                        background: none !important;
+                    }
                 }
             }
         }
@@ -201,6 +209,35 @@
             tp-yt-paper-listbox#menu.yt-dropdown-menu {
                 padding-top: 0px;
                 padding-bottom: 0px;
+            }
+        }
+
+        /* Sidebar container (for recommended videos) */
+        ytd-watch-next-secondary-results-renderer {
+            > #items > ytd-item-section-renderer > #contents {
+                /* Weird channel in related */
+                > ytd-channel-renderer {
+                    display: none;
+                }
+
+                /* Fix margins */
+                > * {
+                    margin-top: 0.2rem;
+                }
+            }
+
+            /* Reduce margin for recommended video */
+            --ytd-rich-grid-item-margin: 2px;
+
+            > #items > ytd-item-section-renderer[is-grid-view-enabled] > #contents {
+                /* Use flex instead of grid :) */
+                display: flex;
+                flex-wrap: wrap;
+                gap: var(--ytd-rich-grid-item-margin);
+
+                > * {
+                    width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) - 0.01px) !important;
+                }
             }
         }
     }
@@ -301,7 +338,7 @@
         }
 
         > #columns {
-            > #primary > #primary-inner > #below {
+            > #primary > #primary-inner > #below > div.box {
                 /* Fix border of "clarify box" */
                 #clarify-box > ytd-info-panel-container-renderer {
                     ytd-info-panel-content-renderer {
@@ -353,24 +390,15 @@
                 > :is(#ticket-shelf, #shopping-timely-shelf) {
                     display: none;
                 }
-            }
 
-            > #secondary {
-                ytd-item-section-renderer > #contents {
-                    /* Weird channel in related */
-                    > ytd-channel-renderer {
-                        display: none;
-                    }
-
-                    /* Fix margins */
-                    > .ytd-item-section-renderer {
-                        margin-top: 0.2rem;
-                    }
+                /* Removes margin */
+                > :is(#clarify-box, ytd-watch-metadata) {
+                    margin-top: 0px;
                 }
             }
         }
 
-        &:not([fullscreen]) {
+        &[is-two-columns_]:not([fullscreen]) {
             > #columns {
                 > #primary {
                     /* Fix margins */
@@ -486,16 +514,6 @@
         }
     }
 
-    ytd-rich-item-renderer.ytd-rich-item-renderer-highlight:is(.ytd-rich-shelf-renderer[is-shelf-item], .ytd-rich-grid-renderer[is-shorts-grid]) {
-        background-color: unset !important;
-        box-shadow: unset !important;
-    }
-
-    /* Reduce padding under the like/dislike button */
-    ytd-watch-metadata.ytd-watch-flexy > #above-the-fold > #top-row {
-        padding-bottom: 4px !important;
-    }
-
     /* Video popup menu */
     .ytp-popup,
     /* Recommended video popup menu */
@@ -503,22 +521,6 @@
         /* Fix corner */
         border-radius: borderRadius !important;
         /* Unblur */
-        backdrop-filter: unset !important;
-    }
-
-    /* Fix corner for menu */
-    tp-yt-paper-item.ytd-menu-service-item-renderer {
-        border-radius: 0px !important;
-    }
-
-    /* Blur override */
-    :root {
-        --yt-frosted-glass-backdrop-filter-override: none;
-    }
-
-    /* Unblur tophead */
-    ytd-masthead:not([frosted-glass-mode = "none"]) > #background.ytd-masthead {
-        background: var(--yt-spec-base-background) !important;
         backdrop-filter: unset !important;
     }
 
@@ -530,17 +532,50 @@
         backdrop-filter: unset !important;
     }
 
-    /* Tiny pp energy 🤏🍆 */
-    :is(yt-lockup-view-model.ytd-item-section-renderer, yt-lockup-view-model.ytd-watch-next-secondary-results-renderer, ytd-rich-item-renderer.ytd-rich-grid-renderer):not(:hover) a[href *= "&pp="] > yt-thumbnail-view-model img {
-        filter: grayscale(100%) blur(2px);
-    }
-
-    /* Patch for Youtube Tiny Generals */
-    ytd-guide-collapsible-section-entry-renderer.ytd-guide-section-renderer > #header:has(> #header-entry > a[href = "/feed/subscriptions"]) {
-        display: flex !important;
-    }
-
     @css {
+        ytd-rich-item-renderer.ytd-rich-item-renderer-highlight:is(.ytd-rich-shelf-renderer[is-shelf-item], .ytd-rich-grid-renderer[is-shorts-grid]) {
+            background-color: unset !important;
+            box-shadow: unset !important;
+        }
+
+        ytd-watch-metadata.ytd-watch-flexy {
+            /* Reduce padding under the like/dislike button */
+            > #above-the-fold > #top-row {
+                padding-bottom: 4px !important;
+            }
+
+            /* Removes excessive margins above like/dislike button */
+            > #above-the-fold > #top-row > * {
+                margin-top: 0.5rem;
+            }
+        }
+
+        /* Fix corner for menu */
+        tp-yt-paper-item.ytd-menu-service-item-renderer {
+            border-radius: 0px !important;
+        }
+
+        /* Blur override */
+        :root {
+            --yt-frosted-glass-backdrop-filter-override: none;
+        }
+
+        /* Unblur tophead */
+        ytd-masthead:not([frosted-glass-mode = "none"]) > #background.ytd-masthead {
+            background: var(--yt-spec-base-background) !important;
+            backdrop-filter: unset !important;
+        }
+
+        /* Tiny pp energy 🤏🍆 */
+        :is(yt-lockup-view-model.ytd-item-section-renderer, yt-lockup-view-model.ytd-watch-next-secondary-results-renderer, ytd-rich-item-renderer.ytd-rich-grid-renderer):not(:hover) a[href *= "&pp="] > yt-thumbnail-view-model img {
+            filter: grayscale(100%) blur(2px);
+        }
+
+        /* Patch for Youtube Tiny Generals */
+        ytd-guide-collapsible-section-entry-renderer.ytd-guide-section-renderer > #header:has(> #header-entry > a[href = "/feed/subscriptions"]) {
+            display: flex !important;
+        }
+
         /* Patch margins and compactify comment thread */
         yt-sub-thread {
             > .ytSubThreadSubThreadContent {
@@ -672,18 +707,17 @@
             right: 20px;
         }
 
-        /* Fixes for new recommended video */
-        yt-lockup-view-model.ytd-item-section-renderer > .ytLockupViewModelHorizontal {
-            /* Downsize thumbnail size */
-            > a.ytLockupViewModelContentImage {
-                height: 7lh;
-                width: calc(7lh * 16 / 9) !important;
+        /* Reduce padding for sidebar */
+        ytd-guide-renderer {
+            --yt-guide-section-horizontal-padding: 0px;
+
+            > #sections.ytd-guide-renderer > .ytd-guide-renderer:first-child {
+                padding: var(--yt-guide-section-horizontal-padding);
             }
 
-            /* Reposition hamburger button */
-            > .ytLockupViewModelMetadata > yt-lockup-metadata-view-model > .ytLockupMetadataViewModelMenuButton {
-                top: -6px;
-                opacity: 1;
+            > #footer.ytd-guide-renderer > :is(div, #copyright) {
+                padding-left: 12px;
+                padding-right: 12px;
             }
         }
     }

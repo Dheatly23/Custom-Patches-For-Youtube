@@ -38,6 +38,13 @@ Source: `change-country-code.user.less`
 IDK why you want to do that, but now you can.
 Maybe it's useful for streamers 🤷‍♂️?
 
+### Resize Recommendation Thumbnail
+
+Source: `resize-thumbnail.user.less`
+
+Another set of Youtube shennanigans (duh).
+Revert recommended thumbnail size so it isn't eating 55% of the space.
+
 ### Miscellaneous Patches for Youtube
 
 Source: `misc.user.css`

@@ -1,0 +1,31 @@
+/* ==UserStyle==
+@name Resize Recommendation Thumbnail
+@namespace github.com/Dheatly23/Custom-Patches-For-Youtube
+@version 1.0.0
+@description Revert changes circa June 2026 that makes recommended thumbnail extra large.
+@author Dheatly23
+@homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
+@supportURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
+@license Apache-2.0
+
+@preprocessor less
+@var text thumbHeight "Thumbnail height (in CSS length syntax)" "7lh"
+@var checkbox repositionMenu "Reposition menu button to top right" 1
+==/UserStyle== */
+
+@-moz-document domain("www.youtube.com") {
+    yt-lockup-view-model.ytd-item-section-renderer > .ytLockupViewModelHorizontal {
+        /* Resize thumbnail */
+        > a.ytLockupViewModelContentImage {
+            height: @thumbHeight;
+            width: calc(@thumbHeight * 16 / 9) !important;
+        }
+
+        > .ytLockupViewModelMetadata > yt-lockup-metadata-view-model > .ytLockupMetadataViewModelMenuButton when (@repositionMenu = 1) {
+            /* Reposition hamburger button */
+            top: -6px;
+            /* Force visible it */
+            opacity: 1;
+        }
+    }
+}
