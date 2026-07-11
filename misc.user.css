@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.18
+@version        0.0.19
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -677,26 +677,35 @@
         ytd-menu-renderer.ytd-comment-view-model > yt-icon-button.ytd-menu-renderer {
             /* Reduce size */
             width: 16px;
+        }
 
-            > button > yt-icon.ytd-menu-renderer {
-                position: relative;
-                right: 4px;
+        yt-icon-button {
+            /* Recenter icon */
+            > button {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                > * {
+                    flex-grow: 0;
+                    flex-shrink: 0;
+                }
             }
 
-            > button:focus > yt-icon.ytd-menu-renderer {
-                right: 6px;
+            /* Repatch focus ring */
+            &:not(.ytd-masthead, .ytd-notification-topbar-button-renderer):is(:focus-visible, :active) {
+                outline: 2px solid light-dark(black, white);
             }
         }
 
-        /* Repatch focus */
-        yt-icon-button.ytd-menu-renderer > button:focus {
-            border-width: 2px;
-            border-style: solid;
-            border-color: #fff;
+        /* Repatch focus ring */
+        .ytSpecButtonShapeNextHost.ytSpecButtonShapeNextIconButton:not(.ytSpecButtonShapeNextTonal):active {
+            outline: 2px solid light-dark(black, white);
         }
 
         /* Disable touchy feedbacky ma */
-        yt-icon-button.ytd-menu-renderer > yt-interaction.yt-icon-button#interaction,
+        .ytSpecButtonShapeNextHost > yt-touch-feedback-shape,
+        yt-interaction.yt-icon-button,
         yt-interaction.ytd-watch-metadata#description-interaction,
         ytd-rich-item-renderer > yt-interaction.ytd-rich-item-renderer#interaction {
             display: none;
@@ -719,6 +728,11 @@
                 padding-left: 12px;
                 padding-right: 12px;
             }
+        }
+
+        /* Ughhhh ugly rimjob lighting */
+        :is(yt-smartimation > .ytSmartImationsContent, .ytSpecButtonShapeNextHost) > yt-light-shape {
+            display: none;
         }
     }
 }
