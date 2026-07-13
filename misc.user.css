@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.19
+@version        0.0.20
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -125,11 +125,6 @@
 
                 > button-view-model.ytSpecButtonViewModelHost > button[aria-label = "More actions"] {
                     width: 16px;
-
-                    /* Override youtube catppuccin */
-                    &:hover {
-                        background-color: transparent !important;
-                    }
                 }
             }
         }
@@ -239,6 +234,11 @@
                     width: calc(100% / var(--video-per-row) - var(--ytd-rich-grid-item-margin) - 0.01px) !important;
                 }
             }
+        }
+
+        /* Reduce swipe open handle thingy (make it the same as ytd-watch-flexy > #columns > #primary) */
+        #contentContainer.tp-yt-app-drawer[swipe-open]::after {
+            width: 8px;
         }
     }
 
@@ -425,6 +425,14 @@
         --ytd-watch-flexy-max-player-width: calc((100vh - var(--ytd-watch-flexy-masthead-height) - 8px - var(--ytd-watch-flexy-space-below-player))*(var(--ytd-watch-flexy-width-ratio)/var(--ytd-watch-flexy-height-ratio)));
         --ytd-watch-flexy-max-player-height: calc(100vh - var(--ytd-watch-flexy-masthead-height) - 8px - var(--ytd-watch-flexy-space-below-player));
         --dcpyt-max-primary-width: calc(100vw - var(--ytd-watch-flexy-horizontal-page-margin) * 4 - var(--ytd-watch-flexy-sidebar-width));
+
+        /* Complete params i guess?
+        --ytd-watch-flexy-space-below-player: 92px; --ytd-watch-flexy-scrollbar-width: 17px; --ytd-watch-flexy-horizontal-page-margin: 16px; --ytd-watch-flexy-top-padding: 12px; --ytd-watch-flexy-sidebar-width: 399.59999999999997px; --ytd-watch-compact-thumbnail-width: 55%; --ytd-watch-flexy-max-player-width-wide-screen: 1840px; --ytd-watch-flexy-sidebar-min-width: 320px; --ytd-watch-flexy-panel-max-height: 360px; --ytd-watch-flexy-chat-max-height: 360px; --ytd-watch-flexy-structured-description-max-height: 360px; --ytd-watch-flexy-comments-panel-max-height: 360px; --ytd-comments-engagement-panel-content-height: 360px;
+*/
+        /* Revert ever changing sidebar size */
+        --ytd-watch-flexy-sidebar-width: 400px !important;
+        /* Revert oversized video height */
+        --ytd-watch-flexy-space-below-player: 92px !important;
     }
 
     /* Comments */
@@ -693,13 +701,14 @@
             }
 
             /* Repatch focus ring */
-            &:not(.ytd-masthead, .ytd-notification-topbar-button-renderer):is(:focus-visible, :active) {
+            &:not(.ytd-masthead, .ytd-notification-topbar-button-renderer) > button:active,
+            &:has(> button:focus-visible) {
                 outline: 2px solid light-dark(black, white);
             }
         }
 
         /* Repatch focus ring */
-        .ytSpecButtonShapeNextHost.ytSpecButtonShapeNextIconButton:not(.ytSpecButtonShapeNextTonal):active {
+        .ytSpecButtonShapeNextHost.ytSpecButtonShapeNextIconButton:not(.ytSpecButtonShapeNextMono.ytSpecButtonShapeNextTonal, .ytSpecButtonShapeNextMono.ytSpecButtonShapeNextText):active {
             outline: 2px solid light-dark(black, white);
         }
 
@@ -733,6 +742,12 @@
         /* Ughhhh ugly rimjob lighting */
         :is(yt-smartimation > .ytSmartImationsContent, .ytSpecButtonShapeNextHost) > yt-light-shape {
             display: none;
+        }
+
+        /* Fix broken line limit on recommended video title */
+        yt-lockup-metadata-view-model.ytLockupMetadataViewModelTitleMaxLines3.ytLockupMetadataViewModelCompact a.ytLockupMetadataViewModelTitle {
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
         }
     }
 }
