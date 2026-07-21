@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.20
+@version        0.0.21
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -120,11 +120,17 @@
             }
 
             /* Small buttons for recommended videos */
-            > :is(.yt-lockup-metadata-view-model__menu-button, .ytLockupMetadataViewModelMenuButton) {
+            > .ytLockupMetadataViewModelMenuButton {
                 right: 0px;
 
                 > button-view-model.ytSpecButtonViewModelHost > button[aria-label = "More actions"] {
                     width: 16px;
+                }
+
+                /* Remove background shennanigans */
+                &::before,
+                &::after {
+                    content: unset;
                 }
             }
         }
@@ -428,6 +434,9 @@
 
         /* Complete params i guess?
         --ytd-watch-flexy-space-below-player: 92px; --ytd-watch-flexy-scrollbar-width: 17px; --ytd-watch-flexy-horizontal-page-margin: 16px; --ytd-watch-flexy-top-padding: 12px; --ytd-watch-flexy-sidebar-width: 399.59999999999997px; --ytd-watch-compact-thumbnail-width: 55%; --ytd-watch-flexy-max-player-width-wide-screen: 1840px; --ytd-watch-flexy-sidebar-min-width: 320px; --ytd-watch-flexy-panel-max-height: 360px; --ytd-watch-flexy-chat-max-height: 360px; --ytd-watch-flexy-structured-description-max-height: 360px; --ytd-watch-flexy-comments-panel-max-height: 360px; --ytd-comments-engagement-panel-content-height: 360px;
+
+        The new one:
+        --ytd-watch-flexy-space-below-player: 48px; --ytd-watch-flexy-scrollbar-width: 17px; --ytd-watch-flexy-horizontal-page-margin: 16px; --ytd-watch-flexy-top-padding: 12px; --ytd-watch-flexy-sidebar-width: 366.3px; --ytd-watch-compact-thumbnail-width: 62.5%; --ytd-watch-flexy-max-player-width-wide-screen: 1840px; --ytd-watch-flexy-sidebar-min-width: 320px; --ytd-watch-flexy-panel-max-height: 506px; --ytd-watch-flexy-chat-max-height: 506px; --ytd-watch-flexy-structured-description-max-height: 506px; --ytd-watch-flexy-comments-panel-max-height: 506px; --ytd-comments-engagement-panel-content-height: 506px;
 */
         /* Revert ever changing sidebar size */
         --ytd-watch-flexy-sidebar-width: 400px !important;
@@ -505,21 +514,6 @@
 
         /* Fix margin */
         --ytd-rich-grid-item-margin: 4px;
-
-        ytd-section-list-renderer > #contents > ytd-item-section-renderer > #contents {
-            /* Fix excessive margins */
-            > * {
-                margin-top: 0px !important;
-                margin-bottom: 0px;
-                margin-left: 1px;
-                margin-right: 1px;
-            }
-
-            /* No shorts */
-            > grid-shelf-view-model:has(ytm-shorts-lockup-view-model-v2) {
-                display: none;
-            }
-        }
     }
 
     /* Video popup menu */
@@ -748,6 +742,88 @@
         yt-lockup-metadata-view-model.ytLockupMetadataViewModelTitleMaxLines3.ytLockupMetadataViewModelCompact a.ytLockupMetadataViewModelTitle {
             -webkit-line-clamp: 2;
             line-clamp: 2;
+        }
+
+        /* Search result */
+        [page-subtype = "search"] {
+            > #contents > ytd-item-section-renderer > #contents {
+                /* Fix excessive margins */
+                > * {
+                    margin-top: 0px !important;
+                    margin-bottom: 0.25rem;
+                    margin-left: 1px;
+                    margin-right: 1px;
+                }
+
+                /* No shorts */
+                > grid-shelf-view-model:has(ytm-shorts-lockup-view-model-v2) {
+                    display: none;
+                }
+            }
+
+            /* Fix layout */
+            ytd-video-renderer.ytd-item-section-renderer > #dismissible > div.ytd-video-renderer {
+                > #meta > #title-wrapper,
+                > #meta > ytd-video-meta-block,
+                > #channel-info > #channel-name,
+                > #channel-info > #attributed-channel-name,
+                > #badges {
+                    padding-left: calc(36px + 0.25rem);
+                }
+
+                > #meta > #title-wrapper > h3 {
+                    margin-top: 0.25rem;
+                    margin-bottom: 0px;
+                    margin-right: 0px;
+                }
+
+                > #channel-info {
+                    > :is(#channel-thumbnail, #avatar) {
+                        padding-right: 0;
+                        position: absolute;
+                        top: 0.25rem;
+                    }
+                }
+
+                > #badges {
+                    margin-bottom: 0px;
+                }
+            }
+
+            /* Fix avatar stack layout */
+            ytd-video-renderer.ytd-item-section-renderer yt-avatar-stack-view-model {
+                > .ytAvatarStackViewModelAvatars {
+                    width: 36px;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    align-items: center;
+                    justify-content: center;
+
+                    > .ytAvatarStackViewModelAvatars {
+                        display: content;
+                    }
+                }
+
+                avatar-view-model {
+                    .ytSpecAvatarShapeHost {
+                        margin: 0px;
+                    }
+
+                    .ytSpecAvatarShapeBackgroundBorder {
+                        border: none;
+                    }
+
+                    > yt-avatar-shape > div {
+                        &,
+                        > div,
+                        > div > div {
+                            width: calc(36px / 2);
+                            height: calc(36px / 2);
+                            aspect-ratio: 1;
+                        }
+                    }
+                }
+            }
         }
     }
 }
