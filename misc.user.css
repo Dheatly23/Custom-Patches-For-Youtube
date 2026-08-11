@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.21
+@version        0.0.22
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -14,6 +14,7 @@
 @var range profileRadius               "  ⚙️ Profiles Radius" [50, 0, 50, 1, '%']
 @var checkbox  searchSideDisable        "Disable search sidebar" 0
 @var text  searchSideWidth             "Sidebar width" 100px
+@var number  recommendedWidth             "Recommended video width" [400, 0, 1000, 1, 'px']
 ==/UserStyle== */
 @-moz-document domain("www.youtube.com") {
     @css {
@@ -439,7 +440,7 @@
         --ytd-watch-flexy-space-below-player: 48px; --ytd-watch-flexy-scrollbar-width: 17px; --ytd-watch-flexy-horizontal-page-margin: 16px; --ytd-watch-flexy-top-padding: 12px; --ytd-watch-flexy-sidebar-width: 366.3px; --ytd-watch-compact-thumbnail-width: 62.5%; --ytd-watch-flexy-max-player-width-wide-screen: 1840px; --ytd-watch-flexy-sidebar-min-width: 320px; --ytd-watch-flexy-panel-max-height: 506px; --ytd-watch-flexy-chat-max-height: 506px; --ytd-watch-flexy-structured-description-max-height: 506px; --ytd-watch-flexy-comments-panel-max-height: 506px; --ytd-comments-engagement-panel-content-height: 506px;
 */
         /* Revert ever changing sidebar size */
-        --ytd-watch-flexy-sidebar-width: 400px !important;
+        --ytd-watch-flexy-sidebar-width: recommendedWidth !important;
         /* Revert oversized video height */
         --ytd-watch-flexy-space-below-player: 92px !important;
     }
@@ -746,7 +747,7 @@
 
         /* Search result */
         [page-subtype = "search"] {
-            > #contents > ytd-item-section-renderer > #contents {
+            ytd-item-section-renderer > #contents {
                 /* Fix excessive margins */
                 > * {
                     margin-top: 0px !important;
@@ -823,6 +824,19 @@
                         }
                     }
                 }
+            }
+
+            > #container > ytd-two-column-search-results-renderer {
+                max-width: unset;
+            }
+        }
+
+        ytd-search {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+
+            &[has-search-header] > #container > #header.ytd-search {
+                max-width: unset;
             }
         }
     }
