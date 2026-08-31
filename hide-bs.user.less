@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.12.0
+@version 1.13.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -97,11 +97,11 @@
     /* Channels page */
     [page-subtype = "channels"] {
         /* Channel videos */
-        ytd-rich-item-renderer.ytd-rich-grid-renderer:has(> #content > yt-lockup-view-model.ytd-rich-item-renderer) {
-            /* Collab? More like shitting all over my feed 🤬 */
-            &:has(ytd-video-meta-block.ytd-rich-grid-media > #metadata > #byline-container:not([hidden])) {
-                .hide(@collabVideo);
-            }
+        /* Collab? More like shitting all over my feed 🤬
+         * (Selector might be very fragile, gotta verify once in a blue moon)
+        */
+        ytd-rich-item-renderer.ytd-rich-grid-renderer:has(> #content > yt-lockup-view-model.ytd-rich-item-renderer:only-child yt-content-metadata-view-model > .ytContentMetadataViewModelMetadataRow:first-child:not(:only-child) > span:only-child:not([aria-label])) {
+            .hide(@collabVideo);
         }
     }
 
@@ -192,9 +192,11 @@
         .comment(is, @pinnedComment);
     }
 
-    /* Fucking hate those mobile-only "feature" */
-    [has-voice-reply] {
-        .comment(is, @voiceComment);
+    /* Fucking hate those mobile-only "feature"
+     * NOTE: This is getting even more inaccurate. In short it filters any comment that errors.
+    */
+    ytd-comment-thread-renderer.ytd-comment-replies-renderer:has(#content-text.ytd-comment-view-model:empty):has(#error-text.ytd-comment-view-model:not(:empty)) {
+        .hide(@voiceComment);
     }
 
     /* Eat graphite! (new feature perhaps?) */
