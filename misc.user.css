@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.22
+@version        0.0.23
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -123,9 +123,12 @@
             /* Small buttons for recommended videos */
             > .ytLockupMetadataViewModelMenuButton {
                 right: 0px;
+                top: 0px;
 
                 > button-view-model.ytSpecButtonViewModelHost > button[aria-label = "More actions"] {
                     width: 16px;
+                    height: 32px;
+                    padding: 0px;
                 }
 
                 /* Remove background shennanigans */
@@ -148,10 +151,13 @@
                 padding-right: 16px;
 
                 > .shortsLockupViewModelHostOutsideMetadataMenu {
-                    top: -6px;
+                    right: 0px;
+                    top: 0px;
 
                     > button {
                         width: 16px;
+                        height: 32px;
+                        padding: 0px;
                         /* Remove hover background */
                         background: none !important;
                     }
@@ -669,11 +675,24 @@
             > div:is(.yt-lockup-view-model__metadata, .ytLockupViewModelMetadata) > lockup-attachments-view-model > div.ytLockupAttachmentsViewModelAttachment {
                 margin-top: 0px;
             }
-        }
 
-        /* Disable touchy feedbacky ma */
-        yt-lockup-view-model > .ytLockupViewModelHost > yt-touch-feedback-shape {
-            display: none;
+            /* Disable touchy feedbacky ma */
+            > yt-touch-feedback-shape {
+                display: none;
+            }
+
+            yt-thumbnail-view-model {
+                /* Brand new bullshit */
+                > yt-thumbnail-overlay-badge-view-model.ytThumbnailOverlayBadgeViewModelHost.ytThumbnailOverlayBadgeViewModelTopStart:has(.ytBadgeShapeHost.ytBadgeShapeThumbnailSpecial.ytBadgeShapeThumbnailBadge.ytBadgeShapeModern.ytBadgeShapeTypography) {
+                    display: none;
+                }
+
+                /* Shrink padding for video length */
+                > yt-thumbnail-bottom-overlay-view-model > .ytThumbnailBottomOverlayViewModelBadgeContainer {
+                    padding-right: 0.25rem;
+                    padding-bottom: 0.25rem;
+                }
+            }
         }
 
         /* Comment menu button */
@@ -756,8 +775,10 @@
                     margin-right: 1px;
                 }
 
-                /* No shorts */
-                > grid-shelf-view-model:has(ytm-shorts-lockup-view-model-v2) {
+                > :is(/* No shorts */
+                grid-shelf-view-model:has(ytm-shorts-lockup-view-model-v2),
+                /* No artist card */
+                yt-official-card-view-model) {
                     display: none;
                 }
             }
