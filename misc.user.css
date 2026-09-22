@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.23
+@version        0.0.24
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -9,6 +9,8 @@
 @supportURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
 @license Apache-2.0
 
+@var range videoPerRow                 "  ⚙️ Videos Per Rows" [6, 1, 15, 1]
+@var range shortsPerRow                "  🩳 Shorts Per Row" [12, 1, 12, 1]
 @var range borderRadius                "  ⚙️ Border Radius" [0, 0, 40, 1, 'px']
 @var range buttonRadius                "  ⚙️ Buttons Radius" [2, 0, 18, 1, 'px']
 @var range profileRadius               "  ⚙️ Profiles Radius" [50, 0, 50, 1, '%']
@@ -17,7 +19,13 @@
 @var number  recommendedWidth             "Recommended video width" [400, 0, 1000, 1, 'px']
 ==/UserStyle== */
 @-moz-document domain("www.youtube.com") {
+    /* Patch shorts variable */
+    :root {
+        --shorts-per-row: shortsPerRow;
+    }
+
     @css {
+
         /* Fix margins */
         ytd-rich-item-renderer:is(.ytd-rich-grid-renderer, .ytd-rich-shelf-renderer) {
             margin-left: calc(var(--ytd-rich-grid-item-margin) / 2) !important;
@@ -32,7 +40,7 @@
         /* Patch shorts */
         ytd-rich-item-renderer.ytd-rich-shelf-renderer[is-shelf-item],
         ytd-rich-item-renderer.ytd-rich-grid-renderer[is-shorts-grid] {
-            width: calc(100% / var(--ytd-rich-grid-slim-items-per-row) - var(--ytd-rich-grid-item-margin) - 0.01px) !important;
+            width: calc(100% / var(--shorts-per-row) - var(--ytd-rich-grid-item-margin) - 0.01px) !important;
         }
 
         ytd-rich-item-renderer.ytd-rich-shelf-renderer[is-shelf-item]:not([hidden]) {
@@ -660,19 +668,19 @@
             margin-right: 0.25rem;
         }
 
-        yt-lockup-view-model > div:is(.yt-lockup-view-model, .ytLockupViewModelHost) {
+        yt-lockup-view-model > .ytLockupViewModelHost {
             /* Reduce padding below thumbnail */
-            &:is(.yt-lockup-view-model--vertical, .ytLockupViewModelVertical) > a:is(.yt-lockup-view-model__content-image, .ytLockupViewModelContentImage) {
+            &.ytLockupViewModelVertical.ytLockupViewModelCompact > a.ytLockupViewModelContentImage {
                 padding-bottom: 0.2rem;
             }
 
             /* Reduce padding beside thumbnail */
-            &:is(.yt-lockup-view-model--horizontal, .ytLockupViewModelHorizontal) > a:is(.yt-lockup-view-model__content-image, .ytLockupViewModelContentImage) {
+            &.ytLockupViewModelHorizontal.ytLockupViewModelCompact > a.ytLockupViewModelContentImage {
                 padding-right: 0.2rem;
             }
 
             /* Reduce margin with subscription buttons below video */
-            > div:is(.yt-lockup-view-model__metadata, .ytLockupViewModelMetadata) > lockup-attachments-view-model > div.ytLockupAttachmentsViewModelAttachment {
+            > .ytLockupViewModelMetadata > lockup-attachments-view-model > div.ytLockupAttachmentsViewModelAttachment {
                 margin-top: 0px;
             }
 

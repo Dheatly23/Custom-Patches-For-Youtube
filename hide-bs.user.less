@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.13.0
+@version 1.13.1
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -192,11 +192,9 @@
         .comment(is, @pinnedComment);
     }
 
-    /* Fucking hate those mobile-only "feature"
-     * NOTE: This is getting even more inaccurate. In short it filters any comment that errors.
-    */
-    ytd-comment-thread-renderer.ytd-comment-replies-renderer:has(#content-text.ytd-comment-view-model:empty):has(#error-text.ytd-comment-view-model:not(:empty)) {
-        .hide(@voiceComment);
+    /* Fucking hate those mobile-only "feature" */
+    [has-voice-reply] {
+        .comment(is, @voiceComment);
     }
 
     /* Eat graphite! (new feature perhaps?) */
