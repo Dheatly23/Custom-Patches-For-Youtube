@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.24
+@version        0.0.25
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -53,13 +53,34 @@
             --ytd-rich-grid-row-margin: 2px !important;
         }
 
-        /* Subscription box full width */
-        [page-subtype = "subscriptions"] ytd-two-column-browse-results-renderer.ytd-browse.grid {
-            width: 100% !important;
+        [page-subtype = "subscriptions"],
+        [page-subtype = "channels"] {
+            /* Subscription/channel box full width */
+            ytd-two-column-browse-results-renderer.ytd-browse.grid {
+                width: 100% !important;
 
-            > div#primary > ytd-rich-grid-renderer.ytd-two-column-browse-results-renderer > div#contents {
-                width: 100%;
-                margin: 0px;
+                > #primary {
+                    padding-inline: 0px !important;
+
+                    > ytd-rich-grid-renderer.ytd-two-column-browse-results-renderer > #contents {
+                        width: 100%;
+                        margin: 0px;
+                    }
+                }
+            }
+
+            /* Force metadata to split line for view count */
+            ytd-rich-item-renderer.ytd-rich-grid-renderer > #content > yt-lockup-view-model.ytd-rich-item-renderer yt-content-metadata-view-model > .ytContentMetadataViewModelMetadataRow:first-child {
+                flex-wrap: wrap;
+
+                > :nth-last-child(2 of .ytContentMetadataViewModelDelimiter) {
+                    flex: 0 0 100%;
+                }
+
+                > [role = "text"] {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
             }
         }
 
@@ -67,16 +88,6 @@
             /* Community post full width */
             ytd-section-list-renderer > #contents > :is(ytd-backstage-items, ytd-comments) {
                 max-width: 100%;
-            }
-
-            /* Channel video full width */
-            ytd-two-column-browse-results-renderer.ytd-browse {
-                max-width: unset;
-                width: 100% !important;
-
-                > #primary {
-                    padding-inline: 0px !important;
-                }
             }
 
             /* Channel header full width */
@@ -670,7 +681,7 @@
 
         yt-lockup-view-model > .ytLockupViewModelHost {
             /* Reduce padding below thumbnail */
-            &.ytLockupViewModelVertical.ytLockupViewModelCompact > a.ytLockupViewModelContentImage {
+            &.ytLockupViewModelVertical:is(.ytLockupViewModelCompact, .ytLockupViewModelRichGridLegacyMargin) > a.ytLockupViewModelContentImage {
                 padding-bottom: 0.2rem;
             }
 
