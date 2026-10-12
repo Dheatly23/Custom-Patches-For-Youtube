@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.25
+@version        0.0.26
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -58,6 +58,7 @@
             /* Subscription/channel box full width */
             ytd-two-column-browse-results-renderer.ytd-browse.grid {
                 width: 100% !important;
+                max-width: 100%;
 
                 > #primary {
                     padding-inline: 0px !important;
@@ -70,16 +71,25 @@
             }
 
             /* Force metadata to split line for view count */
-            ytd-rich-item-renderer.ytd-rich-grid-renderer > #content > yt-lockup-view-model.ytd-rich-item-renderer yt-content-metadata-view-model > .ytContentMetadataViewModelMetadataRow:first-child {
-                flex-wrap: wrap;
-
-                > :nth-last-child(2 of .ytContentMetadataViewModelDelimiter) {
-                    flex: 0 0 100%;
+            ytd-rich-item-renderer.ytd-rich-grid-renderer > #content > yt-lockup-view-model.ytd-rich-item-renderer {
+                yt-lockup-metadata-view-model > .ytLockupMetadataViewModelTextContainer > .ytLockupMetadataViewModelHeadingReset > .ytLockupMetadataViewModelTitle {
+                    line-height: 2rem;
                 }
 
-                > [role = "text"] {
-                    overflow: hidden;
-                    text-overflow: ellipsis;
+                yt-content-metadata-view-model > .ytContentMetadataViewModelMetadataRow:first-child {
+                    flex-wrap: wrap;
+
+                    /* Typical of normal video */
+                    &:has(> .ytIconWrapperHost.ytContentMetadataViewModelLeadingIcon) > :nth-last-child(2 of .ytContentMetadataViewModelDelimiter),
+                    /* Typical of livestream/premiere */
+                    &:not(:has(> .ytIconWrapperHost.ytContentMetadataViewModelLeadingIcon)) > :nth-last-child(1 of .ytContentMetadataViewModelDelimiter) {
+                        flex: 0 0 100%;
+                    }
+
+                    > * {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
                 }
             }
         }
