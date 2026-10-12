@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.13.1
+@version 1.14.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -22,6 +22,7 @@
 @var select verifiedComment "Verified (and Artist) User Comment" ["show", "hide", "soft-hide"]
 @var select pinnedComment "Pinned Comment" ["show", "hide", "soft-hide"]
 @var select voiceComment "Voice Comment" ["show", "hide", "soft-hide"]
+@var select gifComment "GIF Comment" ["show", "hide", "soft-hide"]
 @var select shortsComment "Shorts Comment" ["show", "hide", "soft-hide"]
 @var select moderatorComment "Moderator Comment" ["show", "hide", "soft-hide"]
 @var select upsellEmoji "Members Only Emoji" ["show", "hide", "soft-hide"]
@@ -51,7 +52,6 @@
 @var select leaderboardBadge "Leaderboard Badge" ["show", "hide", "soft-hide"]
 @var checkbox buttonInMenu "Button Options Affect Menu Items Too" 1
 ==/UserStyle== */
-
 @-moz-document domain("youtube.com") {
     /* Youtube site */
     /* Hide 🖕 */
@@ -200,6 +200,11 @@
     /* Eat graphite! (new feature perhaps?) */
     yt-icon[aria-label = "Moderator badge"] {
         .comment(has, @moderatorComment);
+    }
+
+    /* Snipe them features before they infect you! /7=======^=o */
+    ytw-comment-image-attachment-view-model {
+        .comment(has, @gifComment);
     }
 
     /* More bullshit comment "feature" (instead of simple image/gif) 🙄
