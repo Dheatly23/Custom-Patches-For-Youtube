@@ -3,6 +3,25 @@
 
 ## Hide Youtube BS
 
+### v1.14.0
+
+#### Additions
+
+- Add GIF comment.
+
+### v1.13.1
+
+#### Fixes
+
+- Revert broken voice comment selector.
+
+### v1.13.0
+
+#### Fixes
+
+- Fix collab video in channel videos page.
+- Fix voice comment selector.
+
 ### v1.12.0
 
 #### Additions
@@ -213,6 +232,12 @@ Please manually reinstall the style.
 First launch.
 
 ## Change Youtube Country Code
+
+### v1.0.1
+
+#### Fixes
+
+- Fix selectors.
 
 ### v1.0.0
 
