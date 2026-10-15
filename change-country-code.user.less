@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Change Youtube Country Code
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.0.0
+@version 1.0.1
 @description Change the country code in youtube logo (cuz why not?)
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -13,8 +13,8 @@
 ==/UserStyle== */
 
 @-moz-document domain("youtube.com") {
-    ytd-topbar-logo-renderer.ytd-masthead#logo {
-        > #country-code {
+    ytd-topbar-logo-renderer {
+        > .ytd-topbar-logo-renderer#country-code {
             /* Hack to hide original text */
             color: transparent;
 
