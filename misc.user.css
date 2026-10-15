@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.26
+@version        0.0.27
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -888,6 +888,11 @@
             &[has-search-header] > #container > #header.ytd-search {
                 max-width: unset;
             }
+        }
+
+        /* Fuck premium 🖕 */
+        yt-lockup-view-model.ytd-item-section-renderer:has(> .ytLockupViewModelHost > a[href ^= "/premium"]) {
+            display: none;
         }
     }
 }
