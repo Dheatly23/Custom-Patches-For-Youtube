@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.14.0
+@version 1.15.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -16,6 +16,7 @@
 @var select collabVideo "Collab Video (might not be perfect)" ["show", "hide", "soft-hide"]
 @var select liveVideo "Live Video" ["show", "hide", "soft-hide"]
 @var select musicVideo "Music Video" ["show", "hide", "soft-hide"]
+@var select hypeVideo "Hyped Video" ["show", "hide", "soft-hide"]
 @var select superThanksComment "Super Thanks Comment" ["show", "hide", "soft-hide"]
 @var select membersComment "Members Comment" ["show", "hide", "soft-hide"]
 @var select heartComment "Hearted Comment" ["show", "hide", "soft-hide"]
@@ -97,10 +98,13 @@
     /* Channels page */
     [page-subtype = "channels"] {
         /* Channel videos */
-        /* Collab? More like shitting all over my feed 🤬
+        /**
+         * Collab? More like shitting all over my feed 🤬
          * (Selector might be very fragile, gotta verify once in a blue moon)
-        */
-        ytd-rich-item-renderer.ytd-rich-grid-renderer:has(> #content > yt-lockup-view-model.ytd-rich-item-renderer:only-child yt-content-metadata-view-model > .ytContentMetadataViewModelMetadataRow:first-child:not(:only-child) > span:only-child:not([aria-label])) {
+         *
+         * NOTE: There is not yet any members-only + collab.
+        **/
+        ytd-rich-item-renderer.ytd-rich-grid-renderer:has(> #content > yt-lockup-view-model.ytd-rich-item-renderer:only-child yt-content-metadata-view-model > .ytContentMetadataViewModelMetadataRow:first-child > .ytContentMetadataViewModelLeadingIcon:not(:first-child)) {
             .hide(@collabVideo);
         }
     }
@@ -140,6 +144,11 @@
         /* Unalive yourself (fuck youtube for inconsistenly removing aria-label) */
         &:has(badge-shape.ytBadgeShapeThumbnailLive > .ytBadgeShapeIcon svg > path[d = "M2.111 2.111a.5.5 0 11.707.707 4.501 4.501 0 000 6.364.5.5 0 01-.707.707 5.5 5.5 0 010-7.778Zm7.07 0a.5.5 0 01.708 0 5.5 5.5 0 010 7.778.5.5 0 11-.707-.707 4.5 4.5 0 000-6.364.5.5 0 010-.707ZM3.703 3.702a.5.5 0 11.707.707 2.25 2.25 0 000 3.182.5.5 0 01-.707.707 3.25 3.25 0 01-.705-3.542 3.25 3.25 0 01.705-1.054Zm3.889 0a.5.5 0 01.707 0 3.25 3.25 0 010 4.596.5.5 0 01-.707-.707 2.25 2.25 0 000-3.182.5.5 0 010-.707ZM6 5a1 1 0 110 2 1 1 0 010-2Z"]) {
             .hide(@liveVideo);
+        }
+
+        /* Hypen't your wasted premium money lol */
+        &:has(badge-shape.ytBadgeShapeDefault > .ytBadgeShapeIcon svg > path[d = "M10.373 1.52a1 1 0 00-.542.805l-.397 4.653-3.53 3.055a1 1 0 00.266 1.678l4.302 1.815 1.815 4.302a1 1 0 001.677.265l3.056-3.53 4.652-.396a1 1 0 00.771-1.514L20.03 8.656l1.06-4.548a1 1 0 00-1.2-1.2l-4.547 1.06-3.998-2.414a1 1 0 00-.97-.034Zm-6.58 11.273-2.5 2.5a1 1 0 101.414 1.414l2.5-2.5a1 1 0 10-1.413-1.414Zm4 2-6.5 6.5a1 1 0 101.413 1.414l6.5-6.5a1 1 0 10-1.414-1.414m1.5 4.5-2 2a1 1 0 101.413 1.414l2-2a1 1 0 10-1.413-1.414Z"]) {
+            .hide(@hypeVideo);
         }
 
         /* Collab? More like shitting all over my feed 🤬 */
@@ -476,6 +485,11 @@
      * (To future maintainer, it's a members showcase thingy in channel homepage)
     **/
     ytd-item-section-renderer.ytd-section-list-renderer:has(ytd-recognition-shelf-renderer) {
+        .hide(@joinButton);
+    }
+
+    /* Whoooo memberslave promo! */
+    yt-page-header-view-model .ytPageHeaderViewModelHeadlineInfo > yt-attribution-view-model:last-of-type:has(> yt-badge-view-model.ytBadgeViewModelHost.ytAttributionViewModelBadge > badge-shape.ytBadgeShapeHost.ytBadgeShapeCommerce.ytBadgeShapeModern) {
         .hide(@joinButton);
     }
 

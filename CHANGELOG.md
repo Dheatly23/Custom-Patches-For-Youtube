@@ -3,6 +3,17 @@
 
 ## Hide Youtube BS
 
+### v1.15.0
+
+#### Additions
+
+- Add hyped video.
+- Add members subscription price.
+
+#### Fixes
+
+- Fix collab video on channel page.
+
 ### v1.14.0
 
 #### Additions
