@@ -14,6 +14,8 @@ Description of each userstyle is as follows:
 
 ### Hide Youtube BS
 
+![banner](./assets/hide-yt-bs-banner.png)
+
 Source: `hide-bs.user.less`
 
 Tired of seeing members-only video recommended to you?
