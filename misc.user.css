@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name           Dheatly's Custom Patches for Youtube
 @namespace      github.com/Dheatly23/Custom-Patches-For-Youtube
-@version        0.0.28
+@version        0.0.29
 @description    Mostly custom patches for `AdashimaaTube. Please match the configuration to it.
 @author         Dheatly23
 @preprocessor   stylus
@@ -356,7 +356,9 @@
     /* Emoji search box */
     yt-emoji-picker-renderer > #search-panel.yt-emoji-picker-renderer,
     /* Chat input box */
-    yt-live-chat-message-input-renderer.yt-live-chat-renderer > #container > #top > #input-container {
+    yt-live-chat-message-input-renderer.yt-live-chat-renderer > #container > #top > #input-container,
+    /* Profile popup */
+    yt-profile-card-view-model.ytProfileCardViewModelHost {
         border-radius: borderRadius;
     }
 
