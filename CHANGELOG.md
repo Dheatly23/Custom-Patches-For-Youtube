@@ -3,6 +3,16 @@
 
 ## Hide Youtube BS
 
+### v1.16.0
+
+#### Additions
+
+- Add hype button.
+
+#### Changes
+
+- Include gifts button in super chat button.
+
 ### v1.15.0
 
 #### Additions

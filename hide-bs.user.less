@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.15.0
+@version 1.16.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -44,6 +44,7 @@
 @var select downloadButton "Download Button" ["show", "hide", "soft-hide"]
 @var select saveButton "Save Button" ["show", "hide", "soft-hide"]
 @var select clipButton "Clip Button" ["show", "hide", "soft-hide"]
+@var select hypeButton "Hype Button" ["show", "hide", "soft-hide"]
 @var select createButton "Create Button" ["show", "hide", "soft-hide"]
 @var select mikeSearchButton "Mike Button Beside Search Box" ["show", "hide", "soft-hide"]
 @var select aiButton "AI Button" ["show", "hide", "soft-hide"]
@@ -515,6 +516,11 @@
             .hide(@clipButton);
         }
 
+        /* Hype-nado tshirt coming soooon! 🌪️ */
+        &:has(> button-view-model > button[aria-label = "Hype"]) {
+            .hide(@hypeButton);
+        }
+
         /* Unbuttons your AI 😲 */
         &:has(> button-view-model > button[aria-label = "Ask"]) {
             .hide(@aiButton);
@@ -522,8 +528,11 @@
     }
 
     /* No thanks and you're not super 🦸‍♂️🤚 */
-    yt-live-chat-app #picker-buttons > #product-picker:not([hidden]) {
-        .hide(@superChatButton);
+    yt-live-chat-app #picker-buttons-container {
+        > #jewels-gifts-button:has(> yt-pdg-gift-button),
+        > #picker-buttons > #product-picker:not([hidden]) {
+            .hide(@superChatButton);
+        }
     }
 
     /* YT-DLP FTW!!!!! 😎 */
