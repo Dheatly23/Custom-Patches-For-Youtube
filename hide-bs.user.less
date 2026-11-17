@@ -1,7 +1,7 @@
 /* ==UserStyle==
 @name Hide Youtube BS
 @namespace github.com/Dheatly23/Custom-Patches-For-Youtube
-@version 1.16.0
+@version 1.17.0
 @description Clean up Youtube's BS to make watching experience better
 @author Dheatly23
 @homepageURL https://github.com/Dheatly23/Custom-Patches-For-Youtube
@@ -14,9 +14,11 @@
 @var select autoDubVideo "Auto Dubbed Video" ["show", "hide", "soft-hide"]
 @var select verifiedVideo "Verified Video" ["show", "hide", "soft-hide"]
 @var select collabVideo "Collab Video (might not be perfect)" ["show", "hide", "soft-hide"]
+@var select shortsVideo "Shorts Video (not 100%)" ["show", "hide", "soft-hide"]
 @var select liveVideo "Live Video" ["show", "hide", "soft-hide"]
 @var select musicVideo "Music Video" ["show", "hide", "soft-hide"]
 @var select hypeVideo "Hyped Video" ["show", "hide", "soft-hide"]
+@var select promotedVideo "Promoted/Featured Video" ["show", "hide", "soft-hide"]
 @var select superThanksComment "Super Thanks Comment" ["show", "hide", "soft-hide"]
 @var select membersComment "Members Comment" ["show", "hide", "soft-hide"]
 @var select heartComment "Hearted Comment" ["show", "hide", "soft-hide"]
@@ -137,6 +139,11 @@
             .hide(@verifiedVideo);
         }
 
+        /* Shorts? Ew, nasty! 🤢 */
+        &:has(a[href ^= "/shorts/"]) {
+            .hide(@shortsVideo);
+        }
+
         /* Jazz music stops (yup, another d selector yay 🎉) */
         &:has(badge-shape.ytBadgeShapeThumbnailDefault > .ytBadgeShapeIcon svg > path[d = "M5.5 1.383V6.88a2.25 2.25 0 101 1.871V4.6l2.743 1.647a.5.5 0 00.757-.43V3.485a.5.5 0 00-.243-.429l-3.5-2.1a.5.5 0 00-.757.427Z"]) {
             .hide(@musicVideo);
@@ -155,6 +162,13 @@
         /* Collab? More like shitting all over my feed 🤬 */
         &:has(yt-avatar-stack-view-model) {
             .hide(@collabVideo);
+        }
+
+        /* You're fired! 🔥💪
+         * (Only ever seen it once lol, might be inaccurate)
+        **/
+        &:has(badge-shape.ytBadgeShapePromoted) {
+            .hide(@promotedVideo);
         }
     }
 

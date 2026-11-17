@@ -3,6 +3,15 @@
 
 ## Hide Youtube BS
 
+### v1.17.0
+
+#### Additions
+
+- Add featured/promoted video.
+- Add shorts video.
+
+  NOTE: It doesn't cover everything yet.
+
 ### v1.16.0
 
 #### Additions
